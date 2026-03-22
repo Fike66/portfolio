@@ -54,8 +54,41 @@ footer {
     background: #2c3e50;
     color: white;
 }
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 10px;
+    margin: 10px;
+}
+
+.gallery img {
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.gallery img:hover {
+    transform: scale(1.05);
+}
 </style>
 </head>
+
+<div id="popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center;">
+    <img id="popup-img" style="max-width:90%; max-height:90%;">
+</div>
+
+<script>
+function openImage(src) {
+    document.getElementById("popup").style.display = "flex";
+    document.getElementById("popup-img").src = src;
+}
+
+document.getElementById("popup").onclick = function() {
+    this.style.display = "none";
+}
+</script>
 
 <body>
 
@@ -94,6 +127,32 @@ footer {
             <li>Microsoft Excel (Formulas & Automation)</li>
             <li>HTML, CSS, JavaScript (Web version)</li>
         </ul>
+    </div>
+</section>
+
+<section>
+    <div class="card">
+        <h2>Project Screenshots</h2>
+
+        <div class="gallery">
+
+            <img src="direction.png" onclick="openImage(this.src)">
+            <img src="open1.png" onclick="openImage(this.src)">
+            <img src="open2.png" onclick="openImage(this.src)">
+            <img src="open3.png" onclick="openImage(this.src)">
+            <img src="input1.png" onclick="openImage(this.src)">
+            <img src="input2.png" onclick="openImage(this.src)">
+            <img src="input3.png" onclick="openImage(this.src)">
+            <img src="report-card1.png" onclick="openImage(this.src)">
+            <img src="report-card2.png" onclick="openImage(this.src)">
+            <img src="report-card3.png" onclick="openImage(this.src)">
+            <img src="report1.png" onclick="openImage(this.src)">
+            <img src="report2.png" onclick="openImage(this.src)">
+            <img src="report3.png" onclick="openImage(this.src)">
+            <img src="report4.png" onclick="openImage(this.src)">
+            <img src="report5.png" onclick="openImage(this.src)">
+            <img src="report6.png" onclick="openImage(this.src)">
+        </div>
     </div>
 </section>
 
