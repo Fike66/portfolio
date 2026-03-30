@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PowerShell ToolKit</title>
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: #f4f6f8;
+    color: #333;
+}
+
+header {
+    background: #2c3e50;
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+section {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    margin-top: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background: #2980b9;
+}
+
+header img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 4px solid white;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #2c3e50;
+    color: white;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 10px;
+    margin: 10px;
+}
+
+.gallery img {
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.gallery img:hover {
+    transform: scale(1.05);
+}
+</style>
+</head>
+
+<div id="popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center;">
+    <img id="popup-img" style="max-width:90%; max-height:90%;">
+</div>
+
+<script>
+function openImage(src) {
+    document.getElementById("popup").style.display = "flex";
+    document.getElementById("popup-img").src = src;
+}
+
+document.getElementById("popup").onclick = function() {
+    this.style.display = "none";
+}
+</script>
+
+<body>
+
+<header>
+    <img src="me1.jpg" alt="Photo">
+    <h1>PowerSheel Toolkit</h1>
+    <p>Wundows system repair Toolkit</p>
+</header>
+
+<section>
+    <div class="card">
+        <h2>Maintenance Overview</h2>
+        <p>
+            As an IT technician, I have well-equipped USB flash drive and external hard disk with essential windows
+            tools and ISO files with driverpack for troubleshooting, maintenance, installation and recovery.
+        </p>
+    </div>
+</section>
+
+<section>
+    <div class="card">
+        <h2>Key Features</h2>
+        <ul>
+            <li>Diagnosing windows problems</li>
+            <li>Identifying specific programs causing slowdown</li>
+            <li>Repairing windows startup problems</li>
+            <li>Scaning Disk and File System Health</li>
+            <li>Checking System File Integrity</li>
+        </ul>
+    </div>
+</section>
+
+<section>
+    <div class="card">
+        <h2>Toolas and devices Used</h2>
+        <ul>
+            <li>Different USB bootables</li>
+            <li>Powerfull windows tools such as MediCatUSB</li>
+        </ul>
+    </div>
+</section>
+
+<section>
+    <div class="card">
+        <h2>Project Screenshots</h2>
+
+        <div class="gallery">
+
+            <img src="fix1.jpg" onclick="openImage(this.src)">
+            <img src="fix2.jpg" onclick="openImage(this.src)">
+            <img src="fix3.jpg" onclick="openImage(this.src)">
+            <img src="fix4.jpg" onclick="openImage(this.src)">
+            <img src="fix5.jpg" onclick="openImage(this.src)">
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="card">
+        <h2>Project Actions</h2>
+        <a href="report-system1.pdf" class="btn" target="_blank">View Full Project (pdf)</a>
+        <a href="report-system2.pdf" class="btn" target="_blank">View Full Project2 (pdf)</a>
+        <a href="repair-toolkit.ps1" class="btn" target="_blank">PowerShell ToolKit (ps1)</a>
+        <a href="school-lab.pdf" class="btn" target="_blank">School Lab (pdf)</a>
+    </div>
+</section>
+
+<footer>
+    <p><a href="index.html" style="color:white;">⬅ Back to HomePage</a></p>
+</footer>
+
+</body>
+</html>
