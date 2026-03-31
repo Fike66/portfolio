@@ -9,6 +9,9 @@
 <title>Fekadu Wolde | Portfolio</title>
 
 <style>
+    html {
+        scroll-behavior: smooth;
+    }
 body {
     font-family: 'Segoe UI', sans-serif;
     margin: 0;
@@ -21,12 +24,12 @@ header {
     background: linear-gradient(135deg, #2c3e50, #4ca1af);
     color: white;
     text-align: center;
-    padding: 50px 20px;
+    padding: 30px 20px;
 }
 
 header img {
-    width: 130px;
-    height: 130px;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     border: 4px solid white;
 }
@@ -115,37 +118,67 @@ footer {
 }
 
 .navbar {
+    background-color: #2c3e50;
     position: sticky;
     top: 0;
-    background: #4c6d8f;
-    color: white;
+    z-index: 1000;
+    padding: 1rem 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
-    z-index: 1000;
-}
-
-.logo {
-    font-weight: bold;
-    font-size: 50px;
-}
-
-.nav-links {
-    list-style: none;
+    flex-wrap: wrap;
+  }
+  .nav-logo {
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: none;
+    padding: 0;
+  }
+  .nav-links {
     display: flex;
-    gap: 15px;
-}
+    gap: 1.8rem;
+    flex-wrap: wrap;
+  }
 
-.nav-links a {
+  .nav-links a {
     color: white;
     text-decoration: none;
-    transition: 0.5s;
-}
+    font-size: 1rem;
+    transition: opacity 0.3s;
+    background: none;
+    padding: 0;
+  }
+  .nav-links a:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+    background: none;
+  }
+  @media (max-width: 768px) {
+    .nav-container {
+      flex-direction: column;
+      gap: 0.8rem;
+      text-align: center;
+    }
+    .nav-links {
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+  }
 
-.nav-links a:hover {
-    color: #6dd5fa;
-}
+
 
 #darkToggle {
     background: none;
@@ -229,11 +262,32 @@ button {
     background: #0056b3;
 }
 
-table {width: 80%;}
-table {border: 5px solid;}
-th {background-color: cyan; font-size: 24px;}
-td {color: black; font-size: 22px; text-align: center;}
-caption {font-size: 25px;}
+.service-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+.service-table th {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.service-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.service-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.service-table th {
+    background-color: #2c3e50;
+    color: white;
+}
 
 </style>
 </head>
@@ -264,15 +318,15 @@ caption {font-size: 25px;}
 
 <body>
     <nav class="navbar">
-    <div class="logo">🏡FW</div>
-    <ul class="nav-link">
-        <li><a href="#about">👤About</a></li>
-        <li><a href="#skills">⚙️Skills</a></li>
-        <li><a href="#projects">🚀Projects</a></li>
-        <li><a href="#contact">📧Contact</a></li>
-    </ul>
-    <button id="darkModeToggle">🌙Dark Mode</button>
-    </nav>
+  <div class="nav-container">
+    <a href="#" class="nav-logo">Fekadu Wolde</a>
+    <div class="nav-links">
+      <a href="#about">👤 About</a>
+      <a href="#skills">⚙️ Skills</a>
+      <a href="#contact">📧 Contact</a>
+    </div>
+  </div>
+</nav>
 
 <header>
     <img src="me2.png" alt="Profile Photo">
@@ -399,7 +453,7 @@ caption {font-size: 25px;}
      <h2>📋Maintenance Service</h2>
     <p>Some of the works we provide for customers and working hours are 
         illustrated in the following tables.</p>
-    <table border="1">
+    <table border="1" class="service-table">
         <caption><b>Table 1.</b> Repair type, stages and their prices</caption>
         <tr>
             <th rowspan="2"></th>
@@ -452,7 +506,7 @@ caption {font-size: 25px;}
 
     <div class="card">
        <h2>⏲️Working time</h2>
-       <table border="1">
+       <table border="1" class="service-table">
         <caption><b>Table 2.</b>Working hours in a week</caption>
         <thead>
             <tr>
@@ -477,7 +531,7 @@ caption {font-size: 25px;}
             </tr>
              <tr>
                 <th>3</th>
-                <td>Wednsday</td>
+                <td>Wednesday</td>
                 <td>--</td>
                 <td>7:00-12:00</td>
             </tr>
@@ -515,10 +569,23 @@ caption {font-size: 25px;}
   </div>
   </section>
 
-<section class="fade-in">
-    <h2>💼CV Resume</h2>
-    <div class="card">
-        <a href="professional_cv.html" class="btn">Open My CV</a>
+ <section id="cv">
+  <div style="background: white; border-radius: 8px; padding: 2rem; margin: 2rem auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center;">
+    <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 0.5rem; display: inline-block;">💼 CV Resume</h2>
+    <p style="margin: 1.5rem 0; color: #555;">Download my complete CV for detailed work history, education, and references.</p>
+    <a href="professional_cv.html" download style="
+      display: inline-block;
+      background-color: #2c3e50;
+      color: white;
+      padding: 10px 24px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: 600;
+      transition: background-color 0.3s;
+    " onmouseover="this.style.backgroundColor='#3498db'" onmouseout="this.style.backgroundColor='#2c3e50'">
+      📄 Download CV
+    </a>
+        <a href="professional_cv.html" class="btn">Open Live</a>
     </div>
 </section>
 
