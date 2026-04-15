@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scientific Calculator Suite</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #eee;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            margin: 0 auto;
+            max-width: 1200px;
+            padding: 0 2rem;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+        }
+        .card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .card h2 {
+            margin-top: 0;
+            color: #ffd93d;
+            border-bottom: 2px solid #ffd93d;
+            padding-bottom: 10px;
+        }
+        input, select, button {
+            padding: 12px;
+            margin: 10px 5px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+        }
+        button {
+            background: #ffd93d;
+            color: #333;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, background 0.2s;
+        }
+        button:hover {
+            background: #ffed4a;
+            transform: scale(1.02);
+        }
+        .result {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 18px;
+            word-wrap: break-word;
+        }
+        .result-label {
+            font-size: 14px;
+            color: #ffd93d;
+            margin-bottom: 5px;
+        }
+        .result-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .table-container {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        th {
+            color: #ffd93d;
+        }
+        .note {
+            font-size: 12px;
+            color: #ccc;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .temp-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .quick-reference {
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .footer {
+            background-color: #2c3e50;
+            color: rgb(183, 171, 171);
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔬 Scientific Calculator Suite for Applied Science by Fekadu Wolde 🧪</h1>
+        <p style="display: block; font-size:large">You can easily use these suites to track and calculate your conversion rates.</p>
+        
+        <div class="grid">
+            <!-- Temperature Converter -->
+            <div class="card">
+                <h2>🌡️ Temperature Scale Converter</h2>
+                <div>
+                    <input type="number" id="tempValue" placeholder="Enter temperature" value="100">
+                    <select id="fromUnit">
+                        <option value="C">Celsius (°C)</option>
+                        <option value="F">Fahrenheit (°F)</option>
+                        <option value="K">Kelvin (K)</option>
+                    </select>
+                    <span>→</span>
+                    <select id="toUnit">
+                        <option value="C">Celsius (°C)</option>
+                        <option value="F" selected>Fahrenheit (°F)</option>
+                        <option value="K">Kelvin (K)</option>
+                    </select>
+                    <button onclick="convertTemperature()">Convert</button>
+                    
+                    <div class="result">
+                        <div class="result-label">🌡️ Converted Temperature:</div>
+                        <div class="result-value" id="tempResult">100°C = 212°F</div>
+                    </div>
+                    
+                    <div class="quick-reference">
+                        <strong>📌 Quick Reference:</strong><br>
+                        • Water freezes: 0°C = 32°F = 273.15K<br>
+                        • Water boils: 100°C = 212°F = 373.15K<br>
+                        • Absolute zero: -273.15°C = 0K
+                    </div>
+                </div>
+            </div>
+
+            <!-- Temperature Comparison Table -->
+            <div class="card">
+                <h2>📊 Temperature Comparison Table</h2>
+                <div>
+                    <button onclick="generateTempTable()">Generate Comparison Table</button>
+                    <div class="table-container">
+                        <div id="tempTable"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Temperature Difference Calculator -->
+            <div class="card">
+                <h2>📐 Temperature Difference</h2>
+                <div>
+                    <input type="number" id="temp1" placeholder="First temperature" value="100">
+                    <input type="number" id="temp2" placeholder="Second temperature" value="32">
+                    <select id="tempUnit">
+                        <option value="C">Celsius (°C)</option>
+                        <option value="F">Fahrenheit (°F)</option>
+                        <option value="K">Kelvin (K)</option>
+                        
+                    </select>
+                    <button onclick="calculateTempDifference()">Calculate Difference</button>
+                    <div class="result">
+                        <div class="result-label">📊 Temperature Difference:</div>
+                        <div class="result-value" id="tempDiffResult">Δ = 68°C</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logarithm Calculator -->
+            <div class="card">
+                <h2>📐 Logarithm Calculator</h2>
+                <div>
+                    <input type="number" id="logValue" placeholder="Enter number" value="100">
+                    <select id="logBase">
+                        <option value="e">Natural Log (ln, base e)</option>
+                        <option value="10">Common Log (log₁₀)</option>
+                        <option value="2">Binary Log (log₂)</option>
+                        <option value="custom">Custom Base</option>
+                    </select>
+                    <div id="customBaseDiv" style="display:none; margin-top:10px;">
+                        <input type="number" id="customBase" placeholder="Enter custom base" value="5" step="any">
+                    </div>
+                    <button onclick="calculateLog()">Calculate Log</button>
+                    <div class="result">
+                        <div class="result-label">📊 Logarithm Result:</div>
+                        <div class="result-value" id="logResult">log₁₀(100) = 2</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anti-Logarithm Calculator -->
+            <div class="card">
+                <h2>🔙 Anti-Logarithm Calculator</h2>
+                <div>
+                    <input type="number" id="antiLogValue" placeholder="Enter logarithm value" value="2">
+                    <select id="antiLogBase">
+                        <option value="e">Natural Anti-log (eˣ)</option>
+                        <option value="10">Common Anti-log (10ˣ)</option>
+                        <option value="2">Binary Anti-log (2ˣ)</option>
+                        <option value="custom">Custom Base</option>
+                    </select>
+                    <div id="customAntiBaseDiv" style="display:none; margin-top:10px;">
+                        <input type="number" id="customAntiBase" placeholder="Enter custom base" value="5" step="any">
+                    </div>
+                    <button onclick="calculateAntiLog()">Calculate Anti-log</button>
+                    <div class="result">
+                        <div class="result-label">🔢 Anti-log Result:</div>
+                        <div class="result-value" id="antiLogResult">10² = 100</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logarithm Table Generator -->
+            <div class="card">
+                <h2>📋 Logarithm Table (1-20)</h2>
+                <div>
+                    <select id="tableBase">
+                        <option value="10">Base 10 (log₁₀)</option>
+                        <option value="e">Natural Log (ln)</option>
+                        <option value="2">Base 2 (log₂)</option>
+                    </select>
+                    <button onclick="generateLogTable()">Generate Table</button>
+                    <div class="table-container">
+                        <div id="logTable"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Change of Base Calculator -->
+            <div class="card">
+                <h2>🔄 Change of Base Formula</h2>
+                <div>
+                    <input type="number" id="changeNum" placeholder="Number" value="8">
+                    <input type="number" id="oldBase" placeholder="Current base" value="2">
+                    <input type="number" id="newBase" placeholder="New base" value="10">
+                    <button onclick="changeBase()">Convert</button>
+                    <div class="result">
+                        <div class="result-label">📐 log₂(8) in base 10:</div>
+                        <div class="result-value" id="changeBaseResult">log₁₀(8) / log₁₀(2) = 3</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exponential Growth/Decay -->
+            <div class="card">
+                <h2>📈 Exponential Growth/Decay</h2>
+                <div>
+                    <input type="number" id="initialAmount" placeholder="Initial amount" value="1000">
+                    <input type="number" id="growthRate" placeholder="Growth rate (%, e.g., 5)" value="5">
+                    <input type="number" id="timePeriods" placeholder="Time periods" value="10">
+                    <select id="growthType">
+                        <option value="growth">Growth (+)</option>
+                        <option value="decay">Decay (-)</option>
+                    </select>
+                    <button onclick="calculateGrowth()">Calculate</button>
+                    <div class="result">
+                        <div class="result-label">📊 Final Amount:</div>
+                        <div class="result-value" id="growthResult">After 10 periods: 1,628.89</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Natural Log & e Calculator -->
+            <div class="card">
+                <h2>🧮 Natural Log (ln) & eˣ</h2>
+                <div>
+                    <input type="number" id="expValue" placeholder="Enter value" value="1">
+                    <button onclick="calculateExp()">Calculate eˣ</button>
+                    <button onclick="calculateLn()">Calculate ln(x)</button>
+                    <div class="result">
+                        <div class="result-label">📊 Result:</div>
+                        <div class="result-value" id="expResult">e¹ = 2.718281828459045</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real-world Applications -->
+            <div class="card">
+                <h2>🌍 Real-world Logarithm Applications</h2>
+                <div>
+                    <select id="appType" onchange="updateAppInputs()">
+                        <option value="ph">pH Scale (Chemistry)</option>
+                        <option value="richter">Richter Scale (Earthquakes)</option>
+                        <option value="decibel">Decibels (Sound)</option>
+                        <option value="halfLife">Half-Life (Radioactive Decay)</option>
+                    </select>
+                    <div id="appInputs"></div>
+                    <button onclick="calculateApplication()">Calculate</button>
+                    <div class="result">
+                        <div class="result-label">📊 Application Result:</div>
+                        <div class="result-value" id="appResult"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="note">
+            💡 Tip:  Natural log uses base e (2.71828...)<br>
+            🌡️ Temperature scales: Celsius, Fahrenheit, Kelvin || Fekadu Wolde.
+        </div>
+
+        <div class="card">
+            <h2>🧮 Factorial Calculator (n!)</h2>
+            <p>Enter a number to calculate its factorial:</p>
+            <input type="number" id="factInput" placeholder="Enter a number" min="0" value="20">
+            <button onclick="calculateFactorial()">Calculate</button>
+            
+            <div id="factResult" class="result">
+                Result: 20! = 2.43290200817664e+18
+            </div>
+            
+            <h3>📊 Scientific Notation:</h3>
+            <div id="scientificNotation" style="background: #0f3460; padding: 10px; border-radius: 5px;">
+                20! = 2.4329 × 10¹⁸
+            </div>
+            
+            <h3>📝 Factorials 0 to 15 (with exponents):</h3>
+            <div id="factorialList" style="line-height: 1.8; max-height: 400px; overflow-y: auto;"></div>
+            
+            <div class="note">
+                💡 Note: Numbers larger than 1.8e+308 become "Infinity" in JavaScript || Fekadu Wolde
+            </div>
+        </div>
+    </div>
+
+    <<footer class="footer">
+        <p><a href="index.html" style="color:white;">⬅ Back to HomePage</a></p>
+        <div class="container">
+            <p>&copy; 2026 Fekadu Wolde || All rights reserved.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        // ========== TEMPERATURE CONVERSION FUNCTIONS ==========
+        
+        // Convert from any scale to Celsius (base unit)
+        function toCelsius(value, fromUnit) {
+            switch(fromUnit) {
+                case 'C': return value;
+                case 'F': return (value - 32) * 5/9;
+                case 'K': return value - 273.15;
+                default: return value;
+            }
+        }
+        
+        // Convert from Celsius to any scale
+        function fromCelsius(value, toUnit) {
+            switch(toUnit) {
+                case 'C': return value;
+                case 'F': return (value * 9/5) + 32;
+                case 'K': return value + 273.15;
+                default: return value;
+            }
+        }
+        
+        // Main temperature conversion function
+        function convertTemperature() {
+            let value = parseFloat(document.getElementById("tempValue").value);
+            let fromUnit = document.getElementById("fromUnit").value;
+            let toUnit = document.getElementById("toUnit").value;
+            
+            if (isNaN(value)) {
+                document.getElementById("tempResult").innerHTML = "❌ Error: Please enter a valid number";
+                return;
+            }
+            
+            // Special case: Absolute zero check
+            let celsius = toCelsius(value, fromUnit);
+            if (celsius < -273.15) {
+                document.getElementById("tempResult").innerHTML = "⚠️ Warning: Temperature below absolute zero (-273.15°C)!";
+                return;
+            }
+            
+            let result = fromCelsius(celsius, toUnit);
+            
+            let unitSymbols = {
+                'C': '°C', 'F': '°F', 'K': 'K'
+            };
+            
+            document.getElementById("tempResult").innerHTML = 
+                `${value} ${unitSymbols[fromUnit]} = ${result.toFixed(4)} ${unitSymbols[toUnit]}<br>
+                <span style="font-size:14px;">In Celsius: ${celsius.toFixed(4)}°C</span>`;
+        }
+        
+        // Generate temperature comparison table
+        function generateTempTable() {
+            let temps = [-40, -20, 0, 20, 37, 50, 100, 200];
+            let tableHTML = "<table><th>°C</th><th>°F</th><th>K</th></tr>";
+            
+            for (let c of temps) {
+                let f = fromCelsius(c, 'F');
+                let k = fromCelsius(c, 'K');
+                
+                tableHTML += `<tr>
+                    <td>${c}°C</td>
+                    <td>${f.toFixed(1)}°F</td>
+                    <td>${k.toFixed(1)}K</td>
+                </tr>`;
+            }
+            tableHTML += "</table>";
+            document.getElementById("tempTable").innerHTML = tableHTML;
+        }
+        
+        // Calculate temperature difference
+        function calculateTempDifference() {
+            let temp1 = parseFloat(document.getElementById("temp1").value);
+            let temp2 = parseFloat(document.getElementById("temp2").value);
+            let unit = document.getElementById("tempUnit").value;
+            
+            if (isNaN(temp1) || isNaN(temp2)) {
+                document.getElementById("tempDiffResult").innerHTML = "❌ Error: Please enter valid numbers";
+                return;
+            }
+            
+            let diff = Math.abs(temp1 - temp2);
+            let unitSymbols = {'C': '°C', 'F': '°F', 'K': 'K', 'R': '°R', 'Re': '°Ré'};
+            
+            // Also show difference in Celsius for context
+            let diffCelsius;
+            if (unit === 'C') diffCelsius = diff;
+            else if (unit === 'F') diffCelsius = diff * 5/9;
+            else if (unit === 'K') diffCelsius = diff;
+            else diffCelsius = diff * 5/4;
+            
+            document.getElementById("tempDiffResult").innerHTML = 
+                `Δ = ${diff.toFixed(4)} ${unitSymbols[unit]}<br>
+                <span style="font-size:14px;">= ${diffCelsius.toFixed(4)}°C difference</span>`;
+        }
+        
+        // ========== LOGARITHM CALCULATOR ==========
+        function calculateLog() {
+            let value = parseFloat(document.getElementById("logValue").value);
+            let base = document.getElementById("logBase").value;
+            let result;
+            let baseName;
+            
+            if (isNaN(value) || value <= 0) {
+                document.getElementById("logResult").innerHTML = "❌ Error: Please enter a positive number";
+                return;
+            }
+            
+            if (base === "e") {
+                result = Math.log(value);
+                baseName = "ln";
+            } else if (base === "10") {
+                result = Math.log10(value);
+                baseName = "log₁₀";
+            } else if (base === "2") {
+                result = Math.log2(value);
+                baseName = "log₂";
+            } else {
+                let customBase = parseFloat(document.getElementById("customBase").value);
+                if (isNaN(customBase) || customBase <= 0 || customBase === 1) {
+                    document.getElementById("logResult").innerHTML = "❌ Error: Base must be positive and not equal to 1";
+                    return;
+                }
+                result = Math.log(value) / Math.log(customBase);
+                baseName = `log${customBase}`;
+            }
+            
+            document.getElementById("logResult").innerHTML = `${baseName}(${value}) = ${result.toExponential(6)}<br>
+            <span style="font-size:14px;">Standard form: ${result.toFixed(6)}</span>`;
+        }
+        
+        // Show/hide custom base input
+        document.getElementById("logBase").addEventListener("change", function() {
+            document.getElementById("customBaseDiv").style.display = 
+                this.value === "custom" ? "block" : "none";
+        });
+        
+        // ========== ANTI-LOGARITHM CALCULATOR ==========
+        function calculateAntiLog() {
+            let value = parseFloat(document.getElementById("antiLogValue").value);
+            let base = document.getElementById("antiLogBase").value;
+            let result;
+            let baseName;
+            
+            if (isNaN(value)) {
+                document.getElementById("antiLogResult").innerHTML = "❌ Error: Please enter a valid number";
+                return;
+            }
+            
+            if (base === "e") {
+                result = Math.exp(value);
+                baseName = "e";
+            } else if (base === "10") {
+                result = Math.pow(10, value);
+                baseName = "10";
+            } else if (base === "2") {
+                result = Math.pow(2, value);
+                baseName = "2";
+            } else {
+                let customBase = parseFloat(document.getElementById("customAntiBase").value);
+                if (isNaN(customBase) || customBase <= 0) {
+                    document.getElementById("antiLogResult").innerHTML = "❌ Error: Base must be positive";
+                    return;
+                }
+                result = Math.pow(customBase, value);
+                baseName = `${customBase}`;
+            }
+            
+            document.getElementById("antiLogResult").innerHTML = `${baseName}^(${value}) = ${result.toExponential(8)}<br>
+            <span style="font-size:14px;">Standard form: ${result.toLocaleString()}</span>`;
+        }
+        
+        document.getElementById("antiLogBase").addEventListener("change", function() {
+            document.getElementById("customAntiBaseDiv").style.display = 
+                this.value === "custom" ? "block" : "none";
+        });
+        
+        // ========== LOGARITHM TABLE GENERATOR ==========
+        function generateLogTable() {
+            let base = document.getElementById("tableBase").value;
+            let tableHTML = "<table>";
+            tableHTML += "<tr><th>n</th><th>log";
+            
+            if (base === "e") tableHTML += "ₑ(n)";
+            else if (base === "10") tableHTML += "₁₀(n)";
+            else tableHTML += "₂(n)";
+            
+            tableHTML += "</th></tr>";
+            
+            for (let i = 1; i <= 20; i++) {
+                let logValue;
+                if (base === "e") logValue = Math.log(i);
+                else if (base === "10") logValue = Math.log10(i);
+                else logValue = Math.log2(i);
+                
+                tableHTML += `<tr>
+                    <td>${i}</td>
+                    <td>${logValue.toFixed(6)}</td>
+                </tr>`;
+            }
+            tableHTML += "</table>";
+            document.getElementById("logTable").innerHTML = tableHTML;
+        }
+        
+        // ========== CHANGE OF BASE FORMULA ==========
+        function changeBase() {
+            let num = parseFloat(document.getElementById("changeNum").value);
+            let oldBase = parseFloat(document.getElementById("oldBase").value);
+            let newBase = parseFloat(document.getElementById("newBase").value);
+            
+            if (isNaN(num) || isNaN(oldBase) || isNaN(newBase) || num <= 0 || oldBase <= 0 || newBase <= 0) {
+                document.getElementById("changeBaseResult").innerHTML = "❌ Error: All values must be positive numbers";
+                return;
+            }
+            
+            let result = Math.log(num) / Math.log(oldBase);
+            let converted = result * Math.log(oldBase) / Math.log(newBase);
+            
+            document.getElementById("changeBaseResult").innerHTML = 
+                `log${oldBase}(${num}) = ${result.toFixed(6)}<br>
+                log${newBase}(${num}) = ${converted.toFixed(6)}<br>
+                Formula: log${newBase}(${num}) = log${oldBase}(${num}) / log${oldBase}(${newBase})`;
+        }
+        
+        // ========== EXPONENTIAL GROWTH/DECAY ==========
+        function calculateGrowth() {
+            let initial = parseFloat(document.getElementById("initialAmount").value);
+            let rate = parseFloat(document.getElementById("growthRate").value);
+            let time = parseFloat(document.getElementById("timePeriods").value);
+            let type = document.getElementById("growthType").value;
+            
+            if (isNaN(initial) || isNaN(rate) || isNaN(time)) {
+                document.getElementById("growthResult").innerHTML = "❌ Error: Please enter valid numbers";
+                return;
+            }
+            
+            let final;
+            if (type === "growth") {
+                final = initial * Math.pow(1 + rate/100, time);
+                document.getElementById("growthResult").innerHTML = 
+                    `After ${time} periods: ${final.toLocaleString(undefined, {maximumFractionDigits: 2})}<br>
+                    📈 Growth of ${rate}% per period`;
+            } else {
+                final = initial * Math.pow(1 - rate/100, time);
+                document.getElementById("growthResult").innerHTML = 
+                    `After ${time} periods: ${final.toLocaleString(undefined, {maximumFractionDigits: 2})}<br>
+                    📉 Decay of ${rate}% per period`;
+            }
+        }
+        
+        // ========== NATURAL LOG & e CALCULATOR ==========
+        function calculateExp() {
+            let value = parseFloat(document.getElementById("expValue").value);
+            if (isNaN(value)) {
+                document.getElementById("expResult").innerHTML = "❌ Error: Please enter a valid number";
+                return;
+            }
+            let result = Math.exp(value);
+            document.getElementById("expResult").innerHTML = 
+                `e^(${value}) = ${result.toExponential(10)}<br>
+                <span style="font-size:14px;">Standard: ${result.toLocaleString()}</span>`;
+        }
+        
+        function calculateLn() {
+            let value = parseFloat(document.getElementById("expValue").value);
+            if (isNaN(value) || value <= 0) {
+                document.getElementById("expResult").innerHTML = "❌ Error: Please enter a positive number";
+                return;
+            }
+            let result = Math.log(value);
+            document.getElementById("expResult").innerHTML = 
+                `ln(${value}) = ${result.toExponential(10)}<br>
+                <span style="font-size:14px;">Standard: ${result.toFixed(6)}</span>`;
+        }
+        
+        // ========== REAL-WORLD APPLICATIONS ==========
+        function updateAppInputs() {
+            let appType = document.getElementById("appType").value;
+            let appInputsDiv = document.getElementById("appInputs");
+            
+            if (appType === "ph") {
+                appInputsDiv.innerHTML = `
+                    <input type="number" id="hConcentration" placeholder="H⁺ concentration (M)" value="0.0001" step="any">
+                    <span>pH = -log₁₀[H⁺]</span>
+                `;
+            } else if (appType === "richter") {
+                appInputsDiv.innerHTML = `
+                    <input type="number" id="amplitude" placeholder="Amplitude ratio" value="1000">
+                    <span>Magnitude = log₁₀(Amplitude)</span>
+                `;
+            } else if (appType === "decibel") {
+                appInputsDiv.innerHTML = `
+                    <input type="number" id="intensity" placeholder="Intensity ratio (I/I₀)" value="100" step="any">
+                    <span>dB = 10 × log₁₀(I/I₀)</span>
+                `;
+            } else if (appType === "halfLife") {
+                appInputsDiv.innerHTML = `
+                    <input type="number" id="initialAmountHL" placeholder="Initial amount" value="100">
+                    <input type="number" id="halfLife" placeholder="Half-life (time units)" value="10">
+                    <input type="number" id="timeElapsed" placeholder="Time elapsed" value="30">
+                    <span>Remaining = Initial × (0.5)^(time/half-life)</span>
+                `;
+            }
+        }
+        
+        function calculateApplication() {
+            let appType = document.getElementById("appType").value;
+            let result;
+            
+            if (appType === "ph") {
+                let hConc = parseFloat(document.getElementById("hConcentration").value);
+                if (isNaN(hConc) || hConc <= 0) {
+                    result = "Error: H⁺ concentration must be positive";
+                } else {
+                    let ph = -Math.log10(hConc);
+                    result = `pH = ${ph.toFixed(2)}<br>`;
+                    if (ph < 7) result += "🔴 Acidic solution";
+                    else if (ph > 7) result += "🔵 Basic (alkaline) solution";
+                    else result += "⚪ Neutral solution";
+                }
+            } else if (appType === "richter") {
+                let amplitude = parseFloat(document.getElementById("amplitude").value);
+                if (isNaN(amplitude) || amplitude <= 0) {
+                    result = "Error: Amplitude must be positive";
+                } else {
+                    let magnitude = Math.log10(amplitude);
+                    result = `Earthquake Magnitude = ${magnitude.toFixed(2)}<br>`;
+                    if (magnitude < 2) result += "✅ Micro (usually not felt)";
+                    else if (magnitude < 5) result += "⚠️ Light to Moderate";
+                    else if (magnitude < 7) result += "🔴 Strong to Major";
+                    else result += "💀 Great (devastating)";
+                }
+            } else if (appType === "decibel") {
+                let intensity = parseFloat(document.getElementById("intensity").value);
+                if (isNaN(intensity) || intensity <= 0) {
+                    result = "Error: Intensity ratio must be positive";
+                } else {
+                    let dB = 10 * Math.log10(intensity);
+                    result = `Sound level = ${dB.toFixed(2)} dB<br>`;
+                    if (dB < 30) result += "🔇 Whisper quiet";
+                    else if (dB < 70) result += "🗣️ Normal conversation";
+                    else if (dB < 100) result += "🔊 Loud (potential hearing damage)";
+                    else result += "💥 Threshold of pain";
+                }
+            } else if (appType === "halfLife") {
+                let initial = parseFloat(document.getElementById("initialAmountHL").value);
+                let halfLife = parseFloat(document.getElementById("halfLife").value);
+                let time = parseFloat(document.getElementById("timeElapsed").value);
+                if (isNaN(initial) || isNaN(halfLife) || isNaN(time) || halfLife <= 0) {
+                    result = "Error: Invalid inputs";
+                } else {
+                    let remaining = initial * Math.pow(0.5, time / halfLife);
+                    let halfLives = time / halfLife;
+                    result = `Remaining amount = ${remaining.toFixed(4)} (${((remaining/initial)*100).toFixed(2)}% of original)<br>
+                    📊 ${halfLives.toFixed(2)} half-lives have passed`;
+                }
+            }
+            
+            document.getElementById("appResult").innerHTML = result;
+        }
+        
+        // Initialize everything
+        generateLogTable();
+        generateTempTable();
+        updateAppInputs();
+        calculateLog();
+        calculateAntiLog();
+        convertTemperature();
+
+         // Function to convert number to scientific notation with proper formatting
+        function toScientificNotation(num) {
+            if (num === 0) return "0";
+            if (!isFinite(num)) return "Infinity";
+            
+            // Use JavaScript's built-in exponential formatting
+            let expForm = num.toExponential(4);
+            let parts = expForm.split('e');
+            let coefficient = parseFloat(parts[0]);
+            let exponent = parseInt(parts[1]);
+            
+            // Create formatted string with Unicode superscript minus sign if needed
+            let exponentStr = exponent.toString();
+            let superscriptDigits = {
+                '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
+                '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '-': '⁻'
+            };
+            
+            let superscriptExp = exponentStr.split('').map(d => superscriptDigits[d] || d).join('');
+            return `${coefficient} × 10${superscriptExp}`;
+        }
+        
+        // Function to calculate factorial using a for loop
+        function calculateFactorial() {
+            let n = parseInt(document.getElementById("factInput").value);
+            
+            // Handle negative numbers
+            if (n < 0) {
+                document.getElementById("factResult").innerHTML = "❌ Result: Error! Factorial not defined for negative numbers.";
+                document.getElementById("scientificNotation").innerHTML = "❌ Cannot display in scientific notation";
+                return;
+            }
+            
+            let factorial = 1;
+            
+            // FOR LOOP to calculate factorial
+            for (let i = 1; i <= n; i++) {
+                factorial = factorial * i;
+                
+                // Stop if we reach Infinity
+                if (!isFinite(factorial)) {
+                    document.getElementById("factResult").innerHTML = `⚠️ Result: ${n}! is too large (exceeds JavaScript's limit of 1.8e+308)`;
+                    document.getElementById("scientificNotation").innerHTML = `⚠️ ${n}! > 1.8 × 10³⁰⁸ (Infinity)`;
+                    return;
+                }
+            }
+            
+            // Format the result
+            let standardForm = factorial.toLocaleString();
+            let expForm = factorial.toExponential(6);
+            let scientificFormatted = toScientificNotation(factorial);
+            
+            document.getElementById("factResult").innerHTML = `
+                <strong>${n}! = ${standardForm}</strong><br>
+                <span class="result-large">Exponential: ${expForm}</span>
+            `;
+            
+            document.getElementById("scientificNotation").innerHTML = `
+                <strong>${n}! in scientific notation:</strong><br>
+                ${scientificFormatted}
+            `;
+        }
+        
+        // Display all factorials from 0 to 15 with exponential format
+        let listDiv = document.getElementById("factorialList");
+        let listHTML = "<table style='width:100%; border-collapse: collapse;'>";
+        listHTML += "<tr style='border-bottom: 1px solid #e94560;'><th>n</th><th>n! (Standard)</th><th>n! (Scientific)</th></tr>";
+        
+        for (let n = 0; n <= 15; n++) {
+            let fact = 1;
+            // Inner for loop to calculate factorial for each number
+            for (let i = 1; i <= n; i++) {
+                fact = fact * i;
+            }
+            
+            let standardDisplay = fact.toLocaleString();
+            let scientificDisplay = fact.toExponential(4);
+            let scientificFormatted = toScientificNotation(fact);
+            
+            listHTML += `<tr style='border-bottom: 1px solid #2a2a4a;'>
+                            <td style='padding: 5px;'><strong>${n}!</strong></td>
+                            <td style='padding: 5px; font-size: 13px;'>${standardDisplay}</td>
+                            <td style='padding: 5px; font-family: monospace;'>${scientificFormatted}</td>
+                         </tr>`;
+        }
+        listHTML += "</table>";
+        listDiv.innerHTML = listHTML;
+        
+        // Calculate initial result for default value (20)
+        calculateFactorial();
+        
+        // Bonus: Show the maximum factorial before Infinity
+        console.log("=== Bonus Info ===");
+        let maxFact = 1;
+        let i = 1;
+        while (isFinite(maxFact)) {
+            maxFact *= i;
+            console.log(`${i}! = ${maxFact.toExponential(4)}`);
+            i++;
+        }
+        console.log(`Maximum factorial in JavaScript: ${i-2}! (anything larger becomes Infinity)`);
+    </script>
+</body>
+</html>
