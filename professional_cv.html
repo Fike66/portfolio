@@ -12,19 +12,15 @@
         color: #000;
     }
 
-    .header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 1rem 0;
-            position: relative;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
+  header {
+    background: #9cb8d4;
+    padding: 5px;
+    text-align: center;
+}
     h1 {
         font-size: 26px;
         margin-bottom: 5px;
+        align-items: center;
     }
 
     h2 {
@@ -44,13 +40,14 @@
 
     .section {
         margin-top: 15px;
+        background-color: rgb(210, 243, 191);
     }
 
     footer {
     text-align: center;
     padding: 20px;
-    background: #2c3e50;
-    color: white;
+    background: #f5c1de;
+    color: black;
 }
 
 header img {
@@ -62,15 +59,53 @@ header img {
     position: right;
 }
 
-.container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
+ .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+            align-items: right;
+            font-weight: 600;
         }
+
+.container {
+            display: flex;
+            justify-content: space-between;
+            align-items: right;
+            flex-wrap: wrap;
+            gap: 0rem;
+        }
+
+        .achievements {
+            background: #eef2f7;
+            padding: 20px 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            list-style: none;
+        }
+
+         .achievements li:before {
+            content: "🏆";
+            position: absolute;
+            left: 0;}
 </style>
 </head>
 
 <body>
+<header>
+    <div>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="project.html">Project-1</a></li>
+            <li><a href="services.html">Project-2</a></li>
+        </ul>
+    </nav>  
+    </div> 
+</header>
+   <div>
+    <h1><strong><u> Basic Personal Information</u></strong></h1>        
+   </div>
 <div class="section">
 <h2>👤 Contacts</h2>
 <p>Name:  <strong><u>Fekadu Wolde</u></strong></p>
@@ -84,11 +119,10 @@ https://www.linkedin.com/in/fekadu-wolde-11ab94193</a></p>
 
 <div class="section">
         <h2>🎓 Professional Summary</h2>
-    <p>
-        Experienced Physics teacher with over 16 years of teaching and leadership experience.
-        Skilled in JavaScript programming, data analysis, and software development. Proven ability
-        to develop automated systems for academic environments, including student reporting tools.
-    </p>
+    
+       <p>Experienced Physics teacher with over 16 years of teaching and leadership experience.
+        Skilled in JavaScript programming, data analysis, and software development.<br> Proven ability
+        to develop automated systems for academic environments, including student reporting tools.</p>
 </div>
 
 <div class="section">
@@ -160,8 +194,11 @@ https://www.linkedin.com/in/fekadu-wolde-11ab94193</a></p>
 <div class="section">
     <h2>🏆 Achievements</h2>
     <ul>
-        <li>Developed Excel-based Students Report System</li>
-        <li>Recognized by Sub City Education Office and School Administration</li>
+        <li><strong>Developed Excel-based Software for Schools</strong> – Developed simple software to analyze, evaluate, 
+                and extract students' annual result records and other statistical data in a simple, efficient, 
+                accessible, and time-saving way.</li>
+        <li><strong>Recognition</strong> – Received a certificate of recognition from Akaki Kality Sub-City 
+                Education Office and from my school for this software.</li>
     </ul>
 </div>
 
@@ -176,10 +213,9 @@ https://www.linkedin.com/in/fekadu-wolde-11ab94193</a></p>
 </div>
 
 <footer>
-    <p><a href="index.html" style="color:white;">⬅ Back to HomePage</a></p>
-    <div class="container">
-            <p>&copy; 2026 Fekadu Wolde || Addis Ababa</p>
-        </div>
+    <p><a href="index.html" style="color:black;">⬅ Back to HomePage</a> -
+        &copy; 2026 Fekadu Wolde || Addis Ababa</p>
+        
 </footer>
 
 </body>
