@@ -132,6 +132,76 @@
 
     </ul>
 
+    <!-- ====== SUBSCRIBE SECTION ====== -->
+<div style="background: #eef3f9; padding: 2rem; border-radius: 12px; 
+     margin: 2.5rem 0; text-align: center;">
+    <h3 style="margin:0 0 0.5rem 0;">📬 Subscribe for Updates</h3>
+    <p style="color:#555; margin-bottom:1.2rem;">Get notified when I publish 
+        new posts about education tech, automation, and IT tips.</p>
+    
+    <form id="subscribe-form" style="display:flex; flex-wrap:wrap; gap:0.8rem; 
+             justify-content:center; max-width:500px; margin:0 auto;">
+        <input type="email" id="subscriber-email" name="email" placeholder="Enter your email" required 
+               style="flex:1; min-width:200px; padding:12px 18px; border:1px solid #ccc; 
+                border-radius:50px; font-size:1rem;">
+        <button type="submit" id="subscribe-btn" style="background:#2a7de1; color:white; 
+                padding:12px 28px; border:none; border-radius:50px; font-weight:600; 
+                font-size:1rem; cursor:pointer;">
+            Subscribe
+        </button>
+    </form>
+    <div id="subscribe-status" style="margin-top:0.8rem; font-size:0.95rem;"></div>
+    <p style="font-size:0.8rem; color:#888; margin-top:0.5rem;">No spam – unsubscribe anytime.</p>
+</div>
+
+<!-- ====== EMAILJS SCRIPT (same as your homepage) ====== -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+    (function() {
+        // Replace with YOUR EmailJS public key
+        emailjs.init({
+            publicKey: "lDBHd7oLRoYO3yDNt",
+        });
+    })();
+
+    document.getElementById('subscribe-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const btn = document.getElementById('subscribe-btn');
+        const status = document.getElementById('subscribe-status');
+        const email = document.getElementById('subscriber-email').value;
+
+        // Show loading state
+        btn.textContent = 'Subscribing...';
+        btn.disabled = true;
+        status.innerHTML = '⏳ Please wait...';
+        status.style.color = '#555';
+
+        // Send to EmailJS
+        emailjs.send("service_n3ajtoh", "template_jxmglbg", {
+            to_email: "fekaduwolde41@gmail.com",      // Where you receive notifications
+            from_email: email,                       // Subscriber's email
+            subject: "📬 New Blog Subscription",
+            message: `New subscriber: ${email}\n\nThey want to receive updates about new blog posts.`
+        })
+        .then(function(response) {
+            status.innerHTML = '✅ Subscribed successfully! Thank you.';
+            status.style.color = 'green';
+            document.getElementById('subscriber-email').value = '';
+            btn.textContent = '✓ Subscribed';
+            btn.style.background = '#28a745';
+        }, function(error) {
+            status.innerHTML = '❌ Oops! Something went wrong. Please try again.';
+            status.style.color = 'red';
+            btn.textContent = 'Subscribe';
+            btn.disabled = false;
+            console.error('EmailJS Error:', error);
+        });
+    });
+</script>
+
+
     <div class="footer">
         &copy; 2026 Fekadu Wolde – Built with ❤️ from Addis Ababa
          <a href="index.html" class="back-link">← Back to Portfolio</a>
