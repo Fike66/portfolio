@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bonus Tools – Fekadu Wolde</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            background: #fafafa;
+            color: #1a1a2e;
+            line-height: 1.7;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #00838f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover { text-decoration: underline; }
+        h1 {
+            font-size: 2.4rem;
+            border-bottom: 3px solid #00bcd4;
+            padding-bottom: 0.5rem;
+        }
+        .subtitle {
+            color: #555;
+            font-size: 1.1rem;
+            margin-top: -0.5rem;
+            margin-bottom: 2rem;
+        }
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.8rem;
+            margin-top: 1.5rem;
+        }
+        .tool-card {
+            background: white;
+            padding: 1.5rem 1.8rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            border-left: 5px solid #00bcd4;
+            transition: transform 0.1s ease;
+        }
+        .tool-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+        .tool-card h3 {
+            margin-top: 0;
+            color: #0a0a1a;
+            background: #00bcd4;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            display: inline-block;
+            color: white;
+            font-size: 1.1rem;
+        }
+        .tool-card .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 0.8rem 0;
+        }
+        .tool-card input, .tool-card select {
+            padding: 10px 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: #f9f9f9;
+            transition: border 0.2s;
+        }
+        .tool-card input:focus, .tool-card select:focus {
+            border-color: #00bcd4;
+            outline: none;
+            background: white;
+        }
+        .tool-card .result-box {
+            background: #e0f7fa;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            margin-top: 0.8rem;
+            font-weight: 600;
+            color: #006064;
+            border: 1px solid #b2ebf2;
+        }
+        .tool-card .constant-list {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0 0 0;
+        }
+        .tool-card .constant-list li {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Courier New', monospace;
+        }
+        .tool-card .constant-list li span:last-child {
+            color: #00838f;
+            font-weight: 600;
+        }
+        .tool-card .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .tool-card .btn-group button {
+            padding: 4px 14px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+        .tool-card .btn-group button:hover {
+            background: #e0f7fa;
+            border-color: #00bcd4;
+        }
+        .tool-card .sci-notation {
+            font-size: 1.1rem;
+            text-align: center;
+            padding: 0.5rem;
+            background: #e0f7fa;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            border: 1px solid #b2ebf2;
+        }
+        .tool-card .sci-notation span {
+            font-weight: 700;
+            color: #006064;
+        }
+        .footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        .cta-mini {
+            text-align: center;
+            margin-top: 2.5rem;
+            background: #1a1a2e;
+            color: white;
+            padding: 1.8rem;
+            border-radius: 12px;
+        }
+        .cta-mini a {
+            color: #4dd0e1;
+            font-weight: 600;
+        }
+        .cta-mini a:hover { color: white; }
+        @media (max-width: 600px) {
+            .tool-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="blog.htm" class="back-link">← Back to Blog</a>
+
+<h1>🔬 Bonus Tools</h1>
+<p class="subtitle">Quick references for students, teachers, and science enthusiasts – built with your feedback in mind.</p>
+
+<!-- ====== TOOL GRID ====== -->
+<div class="tool-grid">
+
+    <!-- 1. Length Converter -->
+    <div class="tool-card">
+        <h3>📏 Length Converter</h3>
+        <div class="input-group">
+            <input type="number" id="length-input" placeholder="Enter value" value="1" step="any" />
+            <select id="length-from">
+                <option value="m">Meters (m)</option>
+                <option value="cm">Centimeters (cm)</option>
+                <option value="mm">Millimeters (mm)</option>
+                <option value="km">Kilometers (km)</option>
+                <option value="ft">Feet (ft)</option>
+                <option value="in">Inches (in)</option>
+            </select>
+            <select id="length-to">
+                <option value="m">Meters (m)</option>
+                <option value="cm" selected>Centimeters (cm)</option>
+                <option value="mm">Millimeters (mm)</option>
+                <option value="km">Kilometers (km)</option>
+                <option value="ft">Feet (ft)</option>
+                <option value="in">Inches (in)</option>
+            </select>
+        </div>
+        <div class="result-box" id="length-result">1 m = 100 cm</div>
+    </div>
+
+    <!-- 2. Temperature Converter -->
+    <div class="tool-card">
+        <h3>🌡️ Temperature Converter</h3>
+        <div class="input-group">
+            <input type="number" id="temp-input" placeholder="Enter value" value="25" step="any" />
+            <select id="temp-from">
+                <option value="C">Celsius (°C)</option>
+                <option value="F">Fahrenheit (°F)</option>
+                <option value="K">Kelvin (K)</option>
+            </select>
+            <select id="temp-to">
+                <option value="C">Celsius (°C)</option>
+                <option value="F" selected>Fahrenheit (°F)</option>
+                <option value="K">Kelvin (K)</option>
+            </select>
+        </div>
+        <div class="result-box" id="temp-result">25 °C = 77.0 °F</div>
+        <div class="btn-group">
+            <button onclick="setTemp(0)">0 °C (Freezing)</button>
+            <button onclick="setTemp(100)">100 °C (Boiling)</button>
+            <button onclick="setTemp(37)">37 °C (Body)</button>
+            <button onclick="setTemp(-273.15)">Absolute Zero</button>
+        </div>
+    </div>
+
+    <!-- 3. Pressure Converter -->
+    <div class="tool-card">
+        <h3>💨 Pressure Converter</h3>
+        <div class="input-group">
+            <input type="number" id="pressure-input" placeholder="Enter value" value="1" step="any" />
+            <select id="pressure-from">
+                <option value="atm">Atmospheres (atm)</option>
+                <option value="pa">Pascals (Pa)</option>
+                <option value="kpa">Kilopascals (kPa)</option>
+                <option value="bar">Bar</option>
+                <option value="mmhg">mmHg (Torr)</option>
+                <option value="psi">PSI</option>
+            </select>
+            <select id="pressure-to">
+                <option value="atm">Atmospheres (atm)</option>
+                <option value="pa">Pascals (Pa)</option>
+                <option value="kpa" selected>Kilopascals (kPa)</option>
+                <option value="bar">Bar</option>
+                <option value="mmhg">mmHg (Torr)</option>
+                <option value="psi">PSI</option>
+            </select>
+        </div>
+        <div class="result-box" id="pressure-result">1 atm = 101.325 kPa</div>
+        <div class="btn-group">
+            <button onclick="setPressure(1)">1 atm</button>
+            <button onclick="setPressure(101325)">101325 Pa</button>
+            <button onclick="setPressure(14.7)">14.7 PSI</button>
+            <button onclick="setPressure(760)">760 mmHg</button>
+        </div>
+    </div>
+
+    <!-- 4. Angle Converter (NEW) -->
+    <div class="tool-card">
+        <h3>📐 Angle Converter</h3>
+        <div class="input-group">
+            <input type="number" id="angle-input" placeholder="Enter value" value="180" step="any" />
+            <select id="angle-from">
+                <option value="deg">Degrees (°)</option>
+                <option value="rad">Radians (rad)</option>
+                <option value="grad">Gradians (grad)</option>
+            </select>
+            <select id="angle-to">
+                <option value="deg">Degrees (°)</option>
+                <option value="rad" selected>Radians (rad)</option>
+                <option value="grad">Gradians (grad)</option>
+            </select>
+        </div>
+        <div class="result-box" id="angle-result">180 ° = 3.1416 rad</div>
+        <div class="btn-group">
+            <button onclick="setAngle(180)">180° (π rad)</button>
+            <button onclick="setAngle(90)">90° (π/2 rad)</button>
+            <button onclick="setAngle(45)">45° (π/4 rad)</button>
+            <button onclick="setAngle(360)">360° (2π rad)</button>
+        </div>
+    </div>
+
+    <!-- 5. Energy Converter (NEW) -->
+    <div class="tool-card">
+        <h3>⚡ Energy Converter</h3>
+        <div class="input-group">
+            <input type="number" id="energy-input" placeholder="Enter value" value="1" step="any" />
+            <select id="energy-from">
+                <option value="j">Joules (J)</option>
+                <option value="kj">Kilojoules (kJ)</option>
+                <option value="cal">Calories (cal)</option>
+                <option value="kcal">Kilocalories (kcal)</option>
+                <option value="ev">Electronvolts (eV)</option>
+                <option value="wh">Watt-hours (Wh)</option>
+            </select>
+            <select id="energy-to">
+                <option value="j">Joules (J)</option>
+                <option value="kj">Kilojoules (kJ)</option>
+                <option value="cal" selected>Calories (cal)</option>
+                <option value="kcal">Kilocalories (kcal)</option>
+                <option value="ev">Electronvolts (eV)</option>
+                <option value="wh">Watt-hours (Wh)</option>
+            </select>
+        </div>
+        <div class="result-box" id="energy-result">1 J = 0.2390 cal</div>
+    </div>
+
+    <!-- 6. Area/Volume Converter (NEW) -->
+    <div class="tool-card">
+        <h3>📦 Area &amp; Volume Converter</h3>
+        <div class="input-group">
+            <input type="number" id="av-input" placeholder="Enter value" value="1" step="any" />
+            <select id="av-type">
+                <option value="area">Area</option>
+                <option value="volume">Volume</option>
+            </select>
+            <select id="av-from">
+                <option value="m2">m²</option>
+                <option value="cm2">cm²</option>
+                <option value="mm2">mm²</option>
+                <option value="km2">km²</option>
+                <option value="ft2">ft²</option>
+                <option value="in2">in²</option>
+                <option value="ha">Hectares</option>
+                <option value="acre">Acres</option>
+            </select>
+            <select id="av-to">
+                <option value="m2">m²</option>
+                <option value="cm2" selected>cm²</option>
+                <option value="mm2">mm²</option>
+                <option value="km2">km²</option>
+                <option value="ft2">ft²</option>
+                <option value="in2">in²</option>
+                <option value="ha">Hectares</option>
+                <option value="acre">Acres</option>
+            </select>
+        </div>
+        <div class="result-box" id="av-result">1 m² = 10000 cm²</div>
+    </div>
+
+    <!-- 7. Half-Life Calculator (NEW) -->
+    <div class="tool-card">
+        <h3>⏳ Half-Life Calculator</h3>
+        <div class="input-group">
+            <label style="font-weight:500; font-size:0.9rem;">Initial Amount (N₀):</label>
+            <input type="number" id="hl-initial" placeholder="Initial amount" value="100" step="any" />
+            <label style="font-weight:500; font-size:0.9rem;">Half-Life (t₁/₂):</label>
+            <input type="number" id="hl-half" placeholder="Half-life" value="10" step="any" />
+            <label style="font-weight:500; font-size:0.9rem;">Time Elapsed (t):</label>
+            <input type="number" id="hl-time" placeholder="Time elapsed" value="20" step="any" />
+        </div>
+        <div class="result-box" id="hl-result">Remaining: 25.00 units</div>
+        <div class="btn-group">
+            <button onclick="setHalfLife(10)">t = 1 half-life</button>
+            <button onclick="setHalfLife(20)">t = 2 half-lives</button>
+            <button onclick="setHalfLife(30)">t = 3 half-lives</button>
+            <button onclick="setHalfLife(5)">t = 0.5 half-life</button>
+        </div>
+    </div>
+
+    <!-- 8. Scientific Notation Helper (NEW) -->
+    <div class="tool-card">
+        <h3>🔢 Scientific Notation Helper</h3>
+        <div class="input-group">
+            <input type="text" id="sci-input" placeholder="Enter a number (e.g., 0.000123 or 5.6e-4)" value="0.000123" />
+            <button onclick="convertSci()" style="padding:10px; border:none; border-radius:8px; background:#00bcd4; color:white; font-weight:600; cursor:pointer;">Convert</button>
+        </div>
+        <div class="sci-notation" id="sci-result">
+            <span>0.000123</span> = <span>1.23 × 10⁻⁴</span>
+        </div>
+        <div style="margin-top:0.8rem; font-size:0.85rem; color:#555;">
+            <strong>Prefixes:</strong> p (10⁻¹²), n (10⁻⁹), μ (10⁻⁶), m (10⁻³), c (10⁻²), k (10³), M (10⁶), G (10⁹), T (10¹²)
+        </div>
+    </div>
+
+    <!-- 9. Scientific Constants -->
+    <div class="tool-card">
+        <h3>🔭 Scientific Constants</h3>
+        <ul class="constant-list">
+            <li><span>Speed of Light (c)</span><span>3.00 × 10⁸ m/s</span></li>
+            <li><span>Planck's Constant (h)</span><span>6.63 × 10⁻³⁴ J·s</span></li>
+            <li><span>Gravitational Constant (G)</span><span>6.67 × 10⁻¹¹ N·m²/kg²</span></li>
+            <li><span>Avogadro's Number (Nₐ)</span><span>6.02 × 10²³ mol⁻¹</span></li>
+            <li><span>Gas Constant (R)</span><span>8.314 J/(mol·K)</span></li>
+            <li><span>Elementary Charge (e)</span><span>1.60 × 10⁻¹⁹ C</span></li>
+            <li><span>Electron Mass (mₑ)</span><span>9.11 × 10⁻³¹ kg</span></li>
+            <li><span>Proton Mass (mₚ)</span><span>1.67 × 10⁻²⁷ kg</span></li>
+        </ul>
+    </div>
+
+    <!-- 10. Log Calculator -->
+    <div class="tool-card">
+        <h3>📊 Log &amp; Scientific Calculator</h3>
+        <div class="input-group">
+            <input type="text" id="log-input" placeholder="Enter a number" value="100" />
+            <select id="log-base">
+                <option value="10">Log₁₀ (Common)</option>
+                <option value="e">Logₑ (Natural, ln)</option>
+                <option value="2">Log₂ (Binary)</option>
+            </select>
+        </div>
+        <div class="result-box" id="log-result">log₁₀(100) = 2.000000</div>
+        <div class="btn-group">
+            <button onclick="document.getElementById('log-input').value='10'; updateLog();">10</button>
+            <button onclick="document.getElementById('log-input').value='2'; updateLog();">2</button>
+            <button onclick="document.getElementById('log-input').value='0.001'; updateLog();">0.001</button>
+            <button onclick="document.getElementById('log-input').value='Math.E'; updateLog();">e</button>
+        </div>
+    </div>
+
+    <!-- 11. Quick Physics Formulas -->
+    <div class="tool-card">
+        <h3>⚡ Quick Physics Formulas</h3>
+        <ul class="constant-list">
+            <li><span>Newton's Second Law</span><span>F = ma</span></li>
+            <li><span>Work-Energy</span><span>W = Fd</span></li>
+            <li><span>Kinetic Energy</span><span>KE = ½mv²</span></li>
+            <li><span>Gravitational Force</span><span>F = Gm₁m₂/r²</span></li>
+            <li><span>Ohm's Law</span><span>V = IR</span></li>
+            <li><span>Power</span><span>P = IV</span></li>
+            <li><span>Wave Speed</span><span>v = fλ</span></li>
+            <li><span>Ideal Gas Law</span><span>PV = nRT</span></li>
+        </ul>
+    </div>
+</div>
+
+<!-- ====== CALL TO ACTION ====== -->
+<div class="cta-mini">
+    <p style="margin:0; font-size:1.05rem;">
+        🧪 Have a suggestion for another tool or constant?
+        <a href="mailto:fekaduwolde41@gmail.com">Let me know</a> and I'll add it.
+    </p>
+</div>
+
+<!-- ====== JAVASCRIPT ====== -->
+<script>
+    // ----- Length Converter -----
+    const lengthMap = {
+        m: 1, cm: 100, mm: 1000, km: 0.001, ft: 3.28084, in: 39.3701
+    };
+
+    function updateLength() {
+        const input = parseFloat(document.getElementById('length-input').value);
+        const from = document.getElementById('length-from').value;
+        const to = document.getElementById('length-to').value;
+        if (isNaN(input) || input <= 0) {
+            document.getElementById('length-result').textContent = 'Please enter a valid number.';
+            return;
+        }
+        const result = (input / lengthMap[from]) * lengthMap[to];
+        document.getElementById('length-result').textContent =
+            `${input} ${from} = ${result.toFixed(4)} ${to}`;
+    }
+    document.getElementById('length-input').addEventListener('input', updateLength);
+    document.getElementById('length-from').addEventListener('change', updateLength);
+    document.getElementById('length-to').addEventListener('change', updateLength);
+
+    // ----- Temperature Converter -----
+    function convertTemperature(value, fromUnit, toUnit) {
+        let celsius;
+        if (fromUnit === 'C') celsius = value;
+        else if (fromUnit === 'F') celsius = (value - 32) * 5 / 9;
+        else if (fromUnit === 'K') celsius = value - 273.15;
+        if (toUnit === 'C') return celsius;
+        else if (toUnit === 'F') return celsius * 9 / 5 + 32;
+        else if (toUnit === 'K') return celsius + 273.15;
+    }
+
+    function updateTemp() {
+        const input = parseFloat(document.getElementById('temp-input').value);
+        const from = document.getElementById('temp-from').value;
+        const to = document.getElementById('temp-to').value;
+        if (isNaN(input)) {
+            document.getElementById('temp-result').textContent = 'Please enter a valid number.';
+            return;
+        }
+        const result = convertTemperature(input, from, to);
+        const fromSymbol = { C: '°C', F: '°F', K: 'K' }[from];
+        const toSymbol = { C: '°C', F: '°F', K: 'K' }[to];
+        document.getElementById('temp-result').textContent =
+            `${input} ${fromSymbol} = ${result.toFixed(2)} ${toSymbol}`;
+    }
+
+    function setTemp(value) {
+        document.getElementById('temp-input').value = value;
+        updateTemp();
+    }
+    document.getElementById('temp-input').addEventListener('input', updateTemp);
+    document.getElementById('temp-from').addEventListener('change', updateTemp);
+    document.getElementById('temp-to').addEventListener('change', updateTemp);
+
+    // ----- Pressure Converter -----
+    const pressureMap = {
+        atm: 1, pa: 101325, kpa: 101.325, bar: 1.01325, mmhg: 760, psi: 14.6959
+    };
+
+    function updatePressure() {
+        const input = parseFloat(document.getElementById('pressure-input').value);
+        const from = document.getElementById('pressure-from').value;
+        const to = document.getElementById('pressure-to').value;
+        if (isNaN(input) || input <= 0) {
+            document.getElementById('pressure-result').textContent = 'Please enter a valid number.';
+            return;
+        }
+        const atm = input / pressureMap[from];
+        const result = atm * pressureMap[to];
+        const fromSymbol = { atm: 'atm', pa: 'Pa', kpa: 'kPa', bar: 'bar', mmhg: 'mmHg', psi: 'PSI' }[from];
+        const toSymbol = { atm: 'atm', pa: 'Pa', kpa: 'kPa', bar: 'bar', mmhg: 'mmHg', psi: 'PSI' }[to];
+        document.getElementById('pressure-result').textContent =
+            `${input} ${fromSymbol} = ${result.toFixed(6)} ${toSymbol}`;
+    }
+
+    function setPressure(value) {
+        document.getElementById('pressure-input').value = value;
+        updatePressure();
+    }
+    document.getElementById('pressure-input').addEventListener('input', updatePressure);
+    document.getElementById('pressure-from').addEventListener('change', updatePressure);
+    document.getElementById('pressure-to').addEventListener('change', updatePressure);
+
+    // ----- Angle Converter (NEW) -----
+    const angleMap = {
+        deg: 1,
+        rad: Math.PI / 180,
+        grad: 1 / 0.9
+    };
+
+    function updateAngle() {
+        const input = parseFloat(document.getElementById('angle-input').value);
+        const from = document.getElementById('angle-from').value;
+        const to = document.getElementById('angle-to').value;
+        if (isNaN(input) || input <= 0) {
+            document.getElementById('angle-result').textContent = 'Please enter a valid number.';
+            return;
+        }
+        const deg = input / angleMap[from];
+        const result = deg * angleMap[to];
+        const fromSymbol = { deg: '°', rad: 'rad', grad: 'grad' }[from];
+        const toSymbol = { deg: '°', rad: 'rad', grad: 'grad' }[to];
+        document.getElementById('angle-result').textContent =
+            `${input} ${fromSymbol} = ${result.toFixed(4)} ${toSymbol}`;
+    }
+
+    function setAngle(value) {
+        document.getElementById('angle-input').value = value;
+        updateAngle();
+    }
+    document.getElementById('angle-input').addEventListener('input', updateAngle);
+    document.getElementById('angle-from').addEventListener('change', updateAngle);
+    document.getElementById('angle-to').addEventListener('change', updateAngle);
+
+    // ----- Energy Converter (NEW) -----
+    const energyMap = {
+        j: 1,
+        kj: 0.001,
+        cal: 0.239006,
+        kcal: 0.000239006,
+        ev: 6.242e18,
+        wh: 0.000277778
+    };
+
+    function updateEnergy() {
+        const input = parseFloat(document.getElementById('energy-input').value);
+        const from = document.getElementById('energy-from').value;
+        const to = document.getElementById('energy-to').value;
+        if (isNaN(input) || input <= 0) {
+            document.getElementById('energy-result').textContent = 'Please enter a valid number.';
+            return;
+        }
+        const j = input / energyMap[from];
+        const result = j * energyMap[to];
+        const fromSymbol = { j: 'J', kj: 'kJ', cal: 'cal', kcal: 'kcal', ev: 'eV', wh: 'Wh' }[from];
+        const toSymbol = { j: 'J', kj: 'kJ', cal: 'cal', kcal: 'kcal', ev: 'eV', wh: 'Wh' }[to];
+        document.getElementById('energy-result').textContent =
+            `${input} ${fromSymbol} = ${result.toFixed(4)} ${toSymbol}`;
+    }
+    document.getElementById('energy-input').addEventListener('input', updateEnergy);
+    document.getElementById('energy-from').addEventListener('change', updateEnergy);
+    document.getElementById('energy-to').addEventListener('change', updateEnergy);
+
+    // ----- Area/Volume Converter (NEW) -----
+    const areaMap = {
+        m2: 1, cm2: 10000, mm2: 1e6, km2: 1e-6,
+        ft2: 10.7639, in2: 1550.003, ha: 0.0001, acre: 0.000247105
+    };
+    const volumeMap = {
+        m3: 1, cm3: 1e6, mm3: 1e9, km3: 1e-9,
+        ft3: 35.3147, in3: 61023.7, l: 1000, ml: 1e6
+    };
+
+    function updateAV() {
+        const input = parseFloat(document.getElementById('av-input').value);
+        const type = document.getElementById('av-type').value;
+        const from = document.getElementById('av-from').value;
+        const to = document.getElementById('av-to').value;
+        if (isNaN(input) || input <= 0) {
+            document.getElementById('av-result').textContent = 'Please enter a valid number.';
+            return;
+        }
+        const map = type === 'area' ? areaMap : volumeMap;
+        const unit = (input / map[from]) * map[to];
+        document.getElementById('av-result').textContent =
+            `${input} ${from} = ${unit.toFixed(4)} ${to}`;
+    }
+    document.getElementById('av-input').addEventListener('input', updateAV);
+    document.getElementById('av-type').addEventListener('change', function() {
+        const type = this.value;
+        const from = document.getElementById('av-from');
+        const to = document.getElementById('av-to');
+        const areaUnits = ['m2', 'cm2', 'mm2', 'km2', 'ft2', 'in2', 'ha', 'acre'];
+        const volumeUnits = ['m3', 'cm3', 'mm3', 'km3', 'ft3', 'in3', 'l', 'ml'];
+        const units = type === 'area' ? areaUnits : volumeUnits;
+        from.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join('');
+        to.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join('');
+        to.value = type === 'area' ? 'cm2' : 'cm3';
+        updateAV();
+    });
+    document.getElementById('av-from').addEventListener('change', updateAV);
+    document.getElementById('av-to').addEventListener('change', updateAV);
+
+    // ----- Half-Life Calculator (NEW) -----
+    function updateHalfLife() {
+        const initial = parseFloat(document.getElementById('hl-initial').value);
+        const half = parseFloat(document.getElementById('hl-half').value);
+        const time = parseFloat(document.getElementById('hl-time').value);
+        if (isNaN(initial) || isNaN(half) || isNaN(time) || half <= 0 || initial <= 0) {
+            document.getElementById('hl-result').textContent = 'Please enter valid positive numbers.';
+            return;
+        }
+        const remaining = initial * Math.pow(0.5, time / half);
+        document.getElementById('hl-result').textContent =
+            `Remaining: ${remaining.toFixed(4)} units (${((remaining/initial)*100).toFixed(2)}%)`;
+    }
+
+    function setHalfLife(time) {
+        document.getElementById('hl-time').value = time;
+        updateHalfLife();
+    }
+    document.getElementById('hl-initial').addEventListener('input', updateHalfLife);
+    document.getElementById('hl-half').addEventListener('input', updateHalfLife);
+    document.getElementById('hl-time').addEventListener('input', updateHalfLife);
+
+    // ----- Scientific Notation Helper (NEW) -----
+    function convertSci() {
+        const input = document.getElementById('sci-input').value.trim();
+        const resultBox = document.getElementById('sci-result');
+        if (!input) {
+            resultBox.innerHTML = '<span>Please enter a number.</span>';
+            return;
+        }
+        let num = parseFloat(input);
+        if (isNaN(num)) {
+            resultBox.innerHTML = '<span>Invalid number. Try something like 0.000123 or 5.6e-4</span>';
+            return;
+        }
+        if (num === 0) {
+            resultBox.innerHTML = '<span>0</span> = <span>0</span>';
+            return;
+        }
+        const exp = Math.floor(Math.log10(Math.abs(num)));
+        const mantissa = num / Math.pow(10, exp);
+        const expDisplay = exp === 0 ? '' : ` × 10${exp < 0 ? '⁻' : '⁺'}${Math.abs(exp)}`;
+        resultBox.innerHTML = `<span>${num}</span> = <span>${mantissa.toFixed(4)}${expDisplay}</span>`;
+    }
+    document.getElementById('sci-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') convertSci();
+    });
+
+    // ----- Log Calculator -----
+    function updateLog() {
+        const inputField = document.getElementById('log-input');
+        let value = inputField.value.trim();
+        let num;
+        if (value.toLowerCase() === 'math.e' || value.toLowerCase() === 'e') {
+            num = Math.E;
+        } else {
+            num = parseFloat(value);
+        }
+        const base = document.getElementById('log-base').value;
+        const resultBox = document.getElementById('log-result');
+        if (isNaN(num) || num <= 0) {
+            resultBox.textContent = 'Please enter a positive number.';
+            return;
+        }
+        let result, baseName;
+        if (base === '10') { result = Math.log10(num); baseName = 'log₁₀'; }
+        else if (base === 'e') { result = Math.log(num); baseName = 'logₑ (ln)'; }
+        else if (base === '2') { result = Math.log2(num); baseName = 'log₂'; }
+        const displayNum = (value.toLowerCase() === 'math.e' || value.toLowerCase() === 'e') ? 'e' : num;
+        resultBox.textContent = `${baseName}(${displayNum}) = ${result.toFixed(6)}`;
+    }
+    document.getElementById('log-input').addEventListener('input', updateLog);
+    document.getElementById('log-base').addEventListener('change', updateLog);
+
+    // ----- Initialize all tools on page load -----
+    window.addEventListener('DOMContentLoaded', function() {
+        updateLength();
+        updateTemp();
+        updatePressure();
+        updateAngle();
+        updateEnergy();
+        updateAV();
+        updateHalfLife();
+        convertSci();
+        updateLog();
+    });
+</script>
+
+<div class="footer">
+    &copy; 2026 Fekadu Wolde – Built with ❤️ from Addis Ababa
+    <a href="blog.htm" class="back-link">← Back to Blog</a>
+</div>
+
+</body>
+</html>
