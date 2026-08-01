@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PowerShell Toolkit for System Repair-2 – Fekadu Wolde</title>
+    
+    <style>
+        /* Consistent blog styles – same as your other posts */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            line-height: 1.8;
+            color: #1a1a2e;
+            background: #fafafa;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #2a7de1;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover { text-decoration: underline; }
+        .blog-header {
+            border-bottom: 3px solid #2a7de1;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+        .blog-header h1 {
+            font-size: 2.4rem;
+            line-height: 1.2;
+            margin-bottom: 0.3rem;
+            color: #0a0a1a;
+        }
+        .blog-meta {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        .blog-meta span {
+            background: #eef3f9;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            margin-right: 0.5rem;
+        }
+        .blog-content h2 {
+            margin-top: 2.2rem;
+            color: #1a1a2e;
+            border-left: 4px solid #2a7de1;
+            padding-left: 0.8rem;
+        }
+        .blog-content h3 {
+            margin-top: 1.5rem;
+            color: #2a3a5e;
+        }
+        .blog-content ul, .blog-content ol {
+            padding-left: 1.8rem;
+        }
+        .blog-content li {
+            margin-bottom: 0.5rem;
+        }
+        .blog-content code {
+            background: #eef3f9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #1a1a2e;
+        }
+        .highlight-box {
+            background: #eef3f9;
+            border-left: 5px solid #2a7de1;
+            padding: 1.2rem 2rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .code-block {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            padding: 1.2rem 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 1.5rem 0;
+        }
+        .code-block .comment { color: #6a9955; }
+        .code-block .cmd { color: #4fc3f7; }
+        .author-bio {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.8rem 2rem;
+            margin: 3rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .author-bio .bio-text {
+            flex: 1;
+        }
+        .author-bio .bio-text h4 {
+            margin: 0 0 0.2rem 0;
+            color: #1a1a2e;
+        }
+        .author-bio .bio-text p {
+            margin: 0;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        .cta-blog {
+            text-align: center;
+            background: #1a1a2e;
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2.5rem 0;
+        }
+        .cta-blog a {
+            display: inline-block;
+            background: #2a7de1;
+            color: white;
+            padding: 12px 36px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+        .cta-blog a:hover { background: #1a5cb0; }
+        .blog-footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #ddd;
+            font-size: 0.9rem;
+            color: #777;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .blog-header h1 { font-size: 1.8rem; }
+            .author-bio { flex-direction: column; text-align: center; }
+            .code-block { font-size: 0.75rem; padding: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="blog.htm" class="back-link">← Back to Blog</a>
+
+<article>
+    <header class="blog-header">
+        <h1>PowerShell Toolkit for PC System Repair-2</h1>
+            <p>Some useful PowerShell commands and the way how you can easily run them and their effects.</p>
+        <div class="blog-meta">
+            <span>📁 Automation</span>
+            <span>📅 August 1, 2026</span>
+            <span>⏱ 7 min read</span>
+        </div>
+    </header>
+
+    <div class="blog-content">
+
+        <p><strong>🛠 Key PowerShell Commands for you to <em>Diagnose</em> your or your friends laptops and desktop
+            computers.</strong></p>
+
+        <p>Here's what it does, why I built it, and how you can use it too.</p>
+
+        <h2>1. Disk & File System Health-I</h2>
+        <p><strong><u>Command:</u></strong> <code> Get-PhysicalDisk</code></p>
+        <p><strong><u>How to run it:</u></strong> Type <code>Get-PhysicalDisk</code> and press <b>Enter</b>. Look at 
+            the <em>HealthStatus</em> column.</p>
+
+        <div class="highlight-box">
+            <strong><u>What it does:</u></strong> Provides a quick overview of all physical drives, including their 
+               <b>HealthStatus</b> (<em>Healthy, Warning, Unhealthy</em>) and <b>OperationalStatus</b> . This confirms 
+               the disk's status from the system's perspective.
+        </div>
+
+        <h2>2. Disk & File System Health-II</h2>
+        <p><strong><u>Command:</u></strong> <code> Get-Volume</code></p>
+        <p><strong><u>How to run it:</u></strong> Type <code>Get-Volume</code> and press <b>Enter</b>. Check 
+            the <em>HealthStatus</em> column for any <em><b>not Healthy</b></em></p>
+
+        <div class="highlight-box">
+            <strong><u>What it does:</u></strong> Checks the health and space allocation of your logical 
+            drives (<b>C:, D:, etc.</b>). It can reveal file system errors that the physical disk check might miss.
+        </div>
+
+
+        <h2>3. Disk & File System Health-III</h2>
+        <p><strong><u>Command:</u></strong> <code> Repair-Volume -DriveLetter C -Scan</code></p>
+        <p><strong><u>How to run it:</u></strong> Type the <b>Command line</b> and press <b>Enter</b>.</p>
+
+        <div class="highlight-box">
+            <strong><u>What it does:</u></strong> Scans the specified drive (<em>C: in this example</em>) for 
+            file system corruption. If issues are found, you can run it with <em><b>-OfflineScanAndFix</b></em> 
+            to repair them, which usually requires a reboot.
+        </div>
+
+
+        <h2>4. System Performance</h2>
+        <p><strong><u>Command:</u></strong> <code> Get-Process | Sort-Object CPU -Descending | Select -First 10</code></p>
+        <p><strong><u>How to run it:</u></strong> Type the <b>Command line</b> and press <b>Enter</b>.</p>
+
+        <div class="highlight-box">
+            <strong><u>What it does:</u></strong> Lists the top 10 processes currently using the most <b>CPU 
+            resources</b>. This helps identify if a specific program is causing slowdowns or high latency.
+        </div>
+
+        
+        <h2>Next: 5, 6, and 7 are coming soon</h2>
+        <p>I'll release it once it's ready.</p>
+
+        <!-- CTA -->
+        <div class="cta-blog">
+            <p style="margin:0 0 0.8rem 0; font-size:1.1rem;">
+                💻 Want to automate your PC maintenance?
+            </p>
+            <p style="margin:0 0 1rem 0; opacity:0.9;">
+                I can help you set up your own toolkit or run it remotely. Let's talk.
+            </p>
+            <a href="mailto:fekaduwolde41@gmail.com">📩 Let's Collaborate</a>
+        </div>
+    </div>
+
+    <!-- Author Bio -->
+    <div class="author-bio">
+        <div style="width:70px; height:70px; border-radius:50%; background:#2a7de1; display:flex; 
+                align-items:center; justify-content:center; color:white; font-size:2rem; font-weight:bold;">FW</div>
+        <div class="bio-text">
+            <h4>Fekadu Wolde</h4>
+            <p>Physics teacher, automation builder, and PC repair specialist.</p>
+        </div>
+    </div>
+
+</article>
+
+<footer class="blog-footer">
+    <p>&copy; 2026 Fekadu Wolde – Built with ❤️ from Addis Ababa</p>
+    <a href="blog.htm" class="back-link">← Back to Blog</a>
+</footer>
+
+</body>
+</html>
