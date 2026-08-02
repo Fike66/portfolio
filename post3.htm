@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PC Maintenance Tips for School Labs – Fekadu Wolde</title>
+    <title>PowerShell Toolkit for System Repair – Fekadu Wolde</title>
     
     <style>
-        /* Same blog styles – keep consistent */
+        /* Consistent blog styles – same as your other posts */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             max-width: 820px;
@@ -51,16 +51,22 @@
             border-left: 4px solid #2a7de1;
             padding-left: 0.8rem;
         }
+        .blog-content h3 {
+            margin-top: 1.5rem;
+            color: #2a3a5e;
+        }
         .blog-content ul, .blog-content ol {
             padding-left: 1.8rem;
         }
         .blog-content li {
             margin-bottom: 0.5rem;
         }
-        .blog-content .tip-number {
-            font-weight: 700;
-            color: #2a7de1;
-            font-size: 1.2rem;
+        .blog-content code {
+            background: #eef3f9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #1a1a2e;
         }
         .highlight-box {
             background: #eef3f9;
@@ -69,6 +75,19 @@
             margin: 2rem 0;
             border-radius: 0 8px 8px 0;
         }
+        .code-block {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            padding: 1.2rem 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 1.5rem 0;
+        }
+        .code-block .comment { color: #6a9955; }
+        .code-block .cmd { color: #4fc3f7; }
         .author-bio {
             background: white;
             border: 1px solid #e0e0e0;
@@ -122,6 +141,7 @@
         @media (max-width: 600px) {
             .blog-header h1 { font-size: 1.8rem; }
             .author-bio { flex-direction: column; text-align: center; }
+            .code-block { font-size: 0.75rem; padding: 0.8rem; }
         }
     </style>
 </head>
@@ -131,89 +151,113 @@
 
 <article>
     <header class="blog-header">
-        <h1>PC Maintenance Tips Every School Lab Needs</h1>
+        <h1>PowerShell Toolkit for PC System Repair-I</h1>
+            <p>Building a PowerShell Toolkit for Computer System Repair</p>
         <div class="blog-meta">
-            <span>📁 IT &amp; Systems</span>
-            <span>📅 July 8, 2026</span>
-            <span>⏱ 6 min read</span>
+            <span>📁 Automation</span>
+            <span>📅 July 10, 2026</span>
+            <span>⏱ 7 min read</span>
         </div>
     </header>
 
     <div class="blog-content">
 
-        <p><strong>School computer labs are notorious for slow, unreliable machines.</strong> After 18 years in Ethiopian schools – and running my own PC repair service – I've seen it all. Dust-clogged fans, bloated hard drives, and labs that lose an entire week of teaching to downtime.</p>
+        <p><strong>I got tired of fixing the same Windows problems manually, week after week.</strong> Slow PCs, 
+            corrupted system files, network issues, and printer glitches – all common for laptops and desktop computers. 
+            So I built a <strong>PowerShell Toolkit</strong> that automates the most frequent repairs with 
+            a single command.</p>
 
-        <p>Here are <strong>five simple, free maintenance habits</strong> that will keep your school lab running smoothly. No expensive tools required – just consistency.</p>
+        <p>Here's what it does, why I built it, and how you can use it too.</p>
 
-        <!-- TIP 1 -->
-        <h2><span class="tip-number">1.</span> Schedule a Monthly Disk Cleanup</h2>
-        <p><strong>The problem:</strong> Students download files, install random software, and leave temporary files everywhere. Within a month, a 256GB drive can be 80% full – and Windows slows to a crawl.</p>
-        <p><strong>The fix:</strong> Use the built-in <strong>Disk Cleanup</strong> tool (search for it in the Start menu). Run it on every lab PC at the end of each month. Check the boxes for <em>Temporary files</em>, <em>Recycle Bin</em>, and <em>Downloads folder</em> if it's safe.</p>
+        <h2>Why PowerShell?</h2>
+        <p>PowerShell is built into Windows. It's powerful, free, and can automate almost anything – from 
+            cleaning temporary files to repairing system images. No need to install third-party tools or pay 
+            for expensive software.</p>
+
         <div class="highlight-box">
-            <strong>🛠 Pro tip:</strong> Create a batch script that runs Disk Cleanup automatically and schedule it via Task Scheduler. One command, zero manual effort.
+            <strong>💡 The goal:</strong> Reduce a typical 30-minute manual repair to a <strong>5-minute 
+                automated script</strong>.
         </div>
 
-        <!-- TIP 2 -->
-        <h2><span class="tip-number">2.</span> Dust Out the Fans Every Term</h2>
-        <p><strong>The problem:</strong> Ethiopian classrooms are dusty. Labs with open windows or poor sealing get clogged fans, causing overheating, random shutdowns, and permanent hardware damage.</p>
-        <p><strong>The fix:</strong> Once per school term, turn off each PC, open the case (or use compressed air through vents), and blow out dust from fans and heat sinks. Desktops need this more than laptops, but both benefit.</p>
-        <p><strong>Safety note:</strong> Hold fans still when blowing air – spinning them too fast can damage bearings.</p>
-
-        <!-- TIP 3 -->
-        <h2><span class="tip-number">3.</span> Uninstall Bloatware and Old Software</h2>
-        <p><strong>The problem:</strong> PCs come with pre-installed trial software, toolbars, and unnecessary apps that eat memory and CPU in the background.</p>
-        <p><strong>The fix:</strong> Use <strong>Settings &gt; Apps &gt; Installed Apps</strong> to review and remove anything that isn't needed for teaching. Focus on:
+        <h2>What My Toolkit Does</h2>
+        <p>I packaged several common repair tasks into a single script. When I run it, it performs:</p>
         <ul>
-            <li>Duplicate utilities (e.g., multiple PDF readers).</li>
-            <li>Manufacturer trial software (antivirus trials, office trials).</li>
-            <li>Old versions of software after updates.</li>
+            <li><strong>Disk Cleanup</strong> – Removes temporary files, recycle bin, and old 
+                Windows update caches.</li>
+            <li><strong>System File Check</strong> – Runs <code>sfc /scannow</code> to repair 
+                corrupted system files.</li>
+            <li><strong>DISM Health Restore</strong> – Fixes the Windows image using 
+                <code>DISM /Online /Cleanup-Image /RestoreHealth</code>.</li>
+            <li><strong>Network Reset</strong> – Flushes DNS, releases/renews IP, and resets Winsock.</li>
+            <li><strong>Startup Cleanup</strong> – Disables unnecessary startup programs that slow boot time.</li>
         </ul>
-        </p>
 
-        <!-- TIP 4 -->
-        <h2><span class="tip-number">4.</span> Set Up Guest Accounts with Restrictions</h2>
-        <p><strong>The problem:</strong> Students install games, change settings, or accidentally delete system files when given full user accounts.</p>
-        <p><strong>The fix:</strong> Create a <strong>standard (non-admin) user account</strong> for students. In Windows, go to <em>Settings &gt; Accounts &gt; Other users</em> and add a new user without administrator privileges. Use that account for all student logins.</p>
-        <p>Bonus: Enable <strong>Windows' "Assigned Access"</strong> (if you have Pro version) to lock PCs to a single educational app or browser.</p>
+        <h2>Example: The Core Script</h2>
+        <p>Here's a simplified version of the main repair routine. This is the heart of my toolkit:</p>
 
-        <!-- TIP 5 -->
-        <h2><span class="tip-number">5.</span> Run a Weekly Malware Scan</h2>
-        <p><strong>The problem:</strong> Students plug in USB drives, visit unsafe websites, and download "free" software that comes with hidden malware.</p>
-        <p><strong>The fix:</strong> Use <strong>Windows Security</strong> (built-in) – it's free and effective. Schedule a full scan every Sunday night. In <em>Virus &amp; threat protection</em>, click <em>Scan options</em> and choose <em>Full scan</em>.</p>
-        <p>If you want extra protection, install <strong>Malwarebytes Free</strong> and run it monthly as a second opinion.</p>
-
-        <!-- SUMMARY -->
-        <div class="highlight-box">
-            <strong>📋 Quick Checklist for Lab Managers:</strong>
-            <ul style="margin:0.5rem 0 0 1.2rem;">
-                <li>✅ Disk Cleanup – Monthly</li>
-                <li>✅ Dust fans – Every term</li>
-                <li>✅ Uninstall bloatware – Once per term</li>
-                <li>✅ Guest accounts – Set up once, use always</li>
-                <li>✅ Malware scan – Weekly</li>
-            </ul>
+        <div class="code-block">
+            <span class="comment"># === Quick System Repair Toolkit ===</span><br />
+            <span class="comment"># Run as Administrator</span><br /><br />
+            Write-Host "Starting System Repair..." -ForegroundColor Cyan<br /><br />
+            <span class="comment"># 1. Disk Cleanup</span><br />
+            Cleanmgr /sagerun:1<br /><br />
+            <span class="comment"># 2. System File Check</span><br />
+            sfc /scannow<br /><br />
+            <span class="comment"># 3. DISM Health Restore</span><br />
+            DISM /Online /Cleanup-Image /RestoreHealth<br /><br />
+            <span class="comment"># 4. Network Reset</span><br />
+            ipconfig /release<br />
+            ipconfig /renew<br />
+            ipconfig /flushdns<br />
+            netsh winsock reset<br /><br />
+            <span class="comment"># 5. Startup Cleanup</span><br />
+            Get-CimInstance Win32_StartupCommand | ForEach-Object {<br />
+            &nbsp;&nbsp;Write-Host "Disabling: $($_.Command)"<br />
+            &nbsp;&nbsp;# Remove from registry or startup folder<br />
+            }<br /><br />
+            Write-Host "✅ Repair Complete! Reboot recommended." -ForegroundColor Green
         </div>
 
-        <h2>Final Thought</h2>
-        <p>You don't need a dedicated IT team to keep your computer healthy. These five habits take <strong>less 
-            than 30 minutes per PC per term</strong> – and they prevent 80% of common failures. 
-            Small effort, huge impact on your skills.</p>
+        <h2>How I Use It</h2>
+        <p>When there is a slow or glitchy PC, I can easily run the script. 
+            Within 5–10 minutes, the machine is back to normal. No reinstalling Windows, no losing files.</p>
+
+        <ul>
+            <li><strong>Before:</strong> 30–45 minutes of manual clicking and troubleshooting.</li>
+            <li><strong>After:</strong> One script, 5 minutes, reliable results.</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>📊 Real impact:</strong> I've used this on over <strong>15 lab PCs</strong> across different 
+            schools. It's saved me (and teachers) countless hours – and reduced IT-related class cancellations.
+        </div>
+
+        <h2>Want to Try It?</h2>
+        <p>You can start with the script above. Save it as <code>Repair-Toolkit.ps1</code>, right-click and 
+            select <strong>"Run with PowerShell"</strong> – but <strong>remember to run as Administrator</strong>.</p>
+        <p>⚠️ <strong>Caution:</strong> Test on one PC first. Some commands (like startup cleanup) should be 
+            reviewed before deploying to all machines.</p>
+
+        <h2>Next Steps: Full Toolkit</h2>
+        <p>I'm currently packaging the full toolkit with a simple GUI menu so anyone can run it – even without 
+            PowerShell knowledge. I'll release it for free once it's ready.</p>
 
         <!-- CTA -->
         <div class="cta-blog">
             <p style="margin:0 0 0.8rem 0; font-size:1.1rem;">
-                🖥️ Managing a computer? Need help with a specific issue?
+                💻 Want to automate your PC maintenance?
             </p>
             <p style="margin:0 0 1rem 0; opacity:0.9;">
-                I offer remote and on-site support – let's keep your PCs running.
+                I can help you set up your own toolkit or run it remotely. Let's talk.
             </p>
-            <a href="mailto:fekaduwolde41@gmail.com">📩 Let's Collaborate</a>
+            <a href="mailto:your.email@domain.com">📩 Let's Collaborate</a>
         </div>
     </div>
 
     <!-- Author Bio -->
     <div class="author-bio">
-        <div style="width:70px; height:70px; border-radius:50%; background:#2a7de1; display:flex; align-items:center; justify-content:center; color:white; font-size:2rem; font-weight:bold;">FW</div>
+        <div style="width:70px; height:70px; border-radius:50%; background:#2a7de1; display:flex; 
+                align-items:center; justify-content:center; color:white; font-size:2rem; font-weight:bold;">FW</div>
         <div class="bio-text">
             <h4>Fekadu Wolde</h4>
             <p>Physics teacher, automation builder, and PC repair specialist.</p>
@@ -224,7 +268,7 @@
 
 <footer class="blog-footer">
     <p>&copy; 2026 Fekadu Wolde – Built with ❤️ from Addis Ababa</p>
-     <a href="blog.htm" class="back-link">← Back to Blog</a>
+    <a href="blog.htm" class="back-link">← Back to Blog</a>
 </footer>
 
 </body>
