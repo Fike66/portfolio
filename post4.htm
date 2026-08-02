@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PowerShell Toolkit for PC System Repair-1 – Fekadu Wolde</title>
+    <title>PowerShell Toolkit for System Repair-II – Fekadu Wolde</title>
     
     <style>
         /* Consistent blog styles – same as your other posts */
@@ -151,82 +151,67 @@
 
 <article>
     <header class="blog-header">
-        <h1>PowerShell Toolkit for PC System Repair-1</h1>
-        <p>Building a PowerShell Toolkit for Computer System Repair</p>
+        <h1>PowerShell Toolkit for PC System Repair-II</h1>
+            <p>Some useful PowerShell commands and the way how you can easily run them and their effects.</p>
         <div class="blog-meta">
             <span>📁 Automation</span>
-            <span>📅 July 25, 2026</span>
+            <span>📅 July 27, 2026</span>
             <span>⏱ 7 min read</span>
         </div>
     </header>
 
     <div class="blog-content">
 
-        <p><strong>I got tired of fixing the same Windows problems manually, week after week.</strong> Slow PCs, corrupted system files, network issues, and printer glitches – all common in school labs. So I built a <strong>PowerShell Toolkit</strong> that automates the most frequent repairs with a single command.</p>
+        <p><strong>🛠 Key PowerShell Commands for you to <em>Diagnose</em> your or your friends laptops and desktop
+            computers.</strong></p>
 
         <p>Here's what it does, why I built it, and how you can use it too.</p>
 
-        <h2>Why PowerShell?</h2>
-        <p>PowerShell is built into Windows. It's powerful, free, and can automate almost anything – from cleaning temporary files to repairing system images. No need to install third-party tools or pay for expensive software.</p>
+        <h2>1. Disk & File System Health-I</h2>
+        <p><strong><u>Command:</u></strong> <code> Get-PhysicalDisk</code></p>
+        <p><strong><u>How to run it:</u></strong> Type <code>Get-PhysicalDisk</code> and press <b>Enter</b>. Look at 
+            the <em>HealthStatus</em> column.</p>
 
         <div class="highlight-box">
-            <strong>💡 The goal:</strong> Reduce a typical 30-minute manual repair to a <strong>5-minute automated script</strong>. Less downtime, happier teachers and students.
+            <strong><u>What it does:</u></strong> Provides a quick overview of all physical drives, including their 
+               <b>HealthStatus</b> (<em>Healthy, Warning, Unhealthy</em>) and <b>OperationalStatus</b> . This confirms 
+               the disk's status from the system's perspective.
         </div>
 
-        <h2>What My Toolkit Does</h2>
-        <p>I packaged several common repair tasks into a single script. When I run it, it performs:</p>
-        <ul>
-            <li><strong>Disk Cleanup</strong> – Removes temporary files, recycle bin, and old Windows update caches.</li>
-            <li><strong>System File Check</strong> – Runs <code>sfc /scannow</code> to repair corrupted system files.</li>
-            <li><strong>DISM Health Restore</strong> – Fixes the Windows image using <code>DISM /Online /Cleanup-Image /RestoreHealth</code>.</li>
-            <li><strong>Network Reset</strong> – Flushes DNS, releases/renews IP, and resets Winsock.</li>
-            <li><strong>Startup Cleanup</strong> – Disables unnecessary startup programs that slow boot time.</li>
-        </ul>
-
-        <h2>Example: The Core Script</h2>
-        <p>Here's a simplified version of the main repair routine. This is the heart of my toolkit:</p>
-
-        <div class="code-block">
-            <span class="comment"># === Quick System Repair Toolkit ===</span><br />
-            <span class="comment"># Run as Administrator</span><br /><br />
-            Write-Host "Starting System Repair..." -ForegroundColor Cyan<br /><br />
-            <span class="comment"># 1. Disk Cleanup</span><br />
-            Cleanmgr /sagerun:1<br /><br />
-            <span class="comment"># 2. System File Check</span><br />
-            sfc /scannow<br /><br />
-            <span class="comment"># 3. DISM Health Restore</span><br />
-            DISM /Online /Cleanup-Image /RestoreHealth<br /><br />
-            <span class="comment"># 4. Network Reset</span><br />
-            ipconfig /release<br />
-            ipconfig /renew<br />
-            ipconfig /flushdns<br />
-            netsh winsock reset<br /><br />
-            <span class="comment"># 5. Startup Cleanup</span><br />
-            Get-CimInstance Win32_StartupCommand | ForEach-Object {<br />
-            &nbsp;&nbsp;Write-Host "Disabling: $($_.Command)"<br />
-            &nbsp;&nbsp;# Remove from registry or startup folder<br />
-            }<br /><br />
-            Write-Host "✅ Repair Complete! Reboot recommended." -ForegroundColor Green
-        </div>
-
-        <h2>How I Use It in Schools</h2>
-        <p>When a teacher reports a slow or glitchy PC, I remote in (or walk over) and run the script. Within 5–10 minutes, the machine is back to normal. No reinstalling Windows, no losing files, no waiting for IT support.</p>
-
-        <ul>
-            <li><strong>Before:</strong> 30–45 minutes of manual clicking and troubleshooting.</li>
-            <li><strong>After:</strong> One script, 5 minutes, reliable results.</li>
-        </ul>
+        <h2>2. Disk & File System Health-II</h2>
+        <p><strong><u>Command:</u></strong> <code> Get-Volume</code></p>
+        <p><strong><u>How to run it:</u></strong> Type <code>Get-Volume</code> and press <b>Enter</b>. Check 
+            the <em>HealthStatus</em> column for any <em><b>not Healthy</b></em></p>
 
         <div class="highlight-box">
-            <strong>📊 Real impact:</strong> I've used this on over <strong>50 lab PCs</strong> across three schools. It's saved me (and teachers) countless hours – and reduced IT-related class cancellations by roughly <strong>70%</strong>.
+            <strong><u>What it does:</u></strong> Checks the health and space allocation of your logical 
+            drives (<b>C:, D:, etc.</b>). It can reveal file system errors that the physical disk check might miss.
         </div>
 
-        <h2>Want to Try It?</h2>
-        <p>You can start with the script above. Save it as <code>Repair-Toolkit.ps1</code>, right-click and select <strong>"Run with PowerShell"</strong> – but <strong>remember to run as Administrator</strong>.</p>
-        <p>⚠️ <strong>Caution:</strong> Test on one PC first. Some commands (like startup cleanup) should be reviewed before deploying to all machines.</p>
 
-        <h2>Next Steps: Full Toolkit</h2>
-        <p>I'm currently packaging the full toolkit with a simple GUI menu so anyone can run it – even without PowerShell knowledge. I'll release it for free once it's ready.</p>
+        <h2>3. Disk & File System Health-III</h2>
+        <p><strong><u>Command:</u></strong> <code> Repair-Volume -DriveLetter C -Scan</code></p>
+        <p><strong><u>How to run it:</u></strong> Type the <b>Command line</b> and press <b>Enter</b>.</p>
+
+        <div class="highlight-box">
+            <strong><u>What it does:</u></strong> Scans the specified drive (<em>C: in this example</em>) for 
+            file system corruption. If issues are found, you can run it with <em><b>-OfflineScanAndFix</b></em> 
+            to repair them, which usually requires a reboot.
+        </div>
+
+
+        <h2>4. System Performance-i</h2>
+        <p><strong><u>Command:</u></strong> <code> Get-Process | Sort-Object CPU -Descending | Select -First 10</code></p>
+        <p><strong><u>How to run it:</u></strong> Type the <b>Command line</b> and press <b>Enter</b>.</p>
+
+        <div class="highlight-box">
+            <strong><u>What it does:</u></strong> Lists the top 10 processes currently using the most <b>CPU 
+            resources</b>. This helps identify if a specific program is causing slowdowns or high latency.
+        </div>
+
+        
+        <h2>Next: 5, 6, and 7 are coming soon</h2>
+        <p>I'll release it once it's ready.</p>
 
         <!-- CTA -->
         <div class="cta-blog">
@@ -236,13 +221,14 @@
             <p style="margin:0 0 1rem 0; opacity:0.9;">
                 I can help you set up your own toolkit or run it remotely. Let's talk.
             </p>
-            <a href="fekaduwolde41@gmail.com">📩 Let's Collaborate</a>
+            <a href="mailto:fekaduwolde41@gmail.com">📩 Let's Collaborate</a>
         </div>
     </div>
 
     <!-- Author Bio -->
     <div class="author-bio">
-        <div style="width:70px; height:70px; border-radius:50%; background:#2a7de1; display:flex; align-items:center; justify-content:center; color:white; font-size:2rem; font-weight:bold;">FW</div>
+        <div style="width:70px; height:70px; border-radius:50%; background:#2a7de1; display:flex; 
+                align-items:center; justify-content:center; color:white; font-size:2rem; font-weight:bold;">FW</div>
         <div class="bio-text">
             <h4>Fekadu Wolde</h4>
             <p>Physics teacher, automation builder, and PC repair specialist.</p>
