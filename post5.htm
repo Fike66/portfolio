@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PowerShell Toolkit for System Repair-2 – Fekadu Wolde</title>
+    <title>PowerShell Toolkit for System Repair-III – Fekadu Wolde</title>
     
     <style>
         /* Consistent blog styles – same as your other posts */
@@ -151,11 +151,11 @@
 
 <article>
     <header class="blog-header">
-        <h1>PowerShell Toolkit for PC System Repair-2</h1>
-            <p>Some useful PowerShell commands and the way how you can easily run them and notice their effects.</p>
+        <h1>PowerShell Toolkit for PC System Repair-III</h1>
+            <p>Some useful PowerShell commands and the way how you can easily run them and their effects.</p>
         <div class="blog-meta">
             <span>📁 Automation</span>
-            <span>📅 August 1, 2026</span>
+            <span>📅 August 2, 2026</span>
             <span>⏱ 7 min read</span>
         </div>
     </header>
@@ -165,53 +165,63 @@
         <p><strong>🛠 Key PowerShell Commands for you to <em>Diagnose</em> your or your friends laptops and desktop
             computers.</strong></p>
 
-        <p>Here's what it does, why I built it, and how you can use it too.</p>
+        <p>Continued... Here's the command, what it does, and how you can use it.</p>
 
-        <h2>1. Disk & File System Health-I</h2>
-        <p><strong><u>Command:</u></strong> <code> Get-PhysicalDisk</code></p>
-        <p><strong><u>How to run it:</u></strong> Type <code>Get-PhysicalDisk</code> and press <b>Enter</b>. Look at 
-            the <em>HealthStatus</em> column.</p>
-
-        <div class="highlight-box">
-            <strong><u>What it does:</u></strong> Provides a quick overview of all physical drives, including their 
-               <b>HealthStatus</b> (<em>Healthy, Warning, Unhealthy</em>) and <b>OperationalStatus</b> . This confirms 
-               the disk's status from the system's perspective.
-        </div>
-
-        <h2>2. Disk & File System Health-II</h2>
-        <p><strong><u>Command:</u></strong> <code> Get-Volume</code></p>
-        <p><strong><u>How to run it:</u></strong> Type <code>Get-Volume</code> and press <b>Enter</b>. Check 
-            the <em>HealthStatus</em> column for any <em><b>not Healthy</b></em></p>
+        <h2>5. System Performance-ii</h2>
+        <p><strong><u>Command:</u></strong> <code> Get-Process | Sort-Object WorkingSet -Descending | Select -First 10</code></p>
+        <p><strong><u>How to run it:</u></strong> Type the command line and press <b>Enter</b>.</p>
 
         <div class="highlight-box">
-            <strong><u>What it does:</u></strong> Checks the health and space allocation of your logical 
-            drives (<b>C:, D:, etc.</b>). It can reveal file system errors that the physical disk check might miss.
+            <strong><u>What it does:</u></strong> Lists the top 10 processes using the most memory (<b>RAM</b>). 
+               High memory usage can force the system to use the disk as <em>"virtual memory"</em> increasing latency.
         </div>
 
-
-        <h2>3. Disk & File System Health-III</h2>
-        <p><strong><u>Command:</u></strong> <code> Repair-Volume -DriveLetter C -Scan</code></p>
-        <p><strong><u>How to run it:</u></strong> Type the <b>Command line</b> and press <b>Enter</b>.</p>
-
-        <div class="highlight-box">
-            <strong><u>What it does:</u></strong> Scans the specified drive (<em>C: in this example</em>) for 
-            file system corruption. If issues are found, you can run it with <em><b>-OfflineScanAndFix</b></em> 
-            to repair them, which usually requires a reboot.
-        </div>
-
-
-        <h2>4. System Performance</h2>
-        <p><strong><u>Command:</u></strong> <code> Get-Process | Sort-Object CPU -Descending | Select -First 10</code></p>
-        <p><strong><u>How to run it:</u></strong> Type the <b>Command line</b> and press <b>Enter</b>.</p>
-
-        <div class="highlight-box">
-            <strong><u>What it does:</u></strong> Lists the top 10 processes currently using the most <b>CPU 
-            resources</b>. This helps identify if a specific program is causing slowdowns or high latency.
-        </div>
-
+        <h2>6. System Performance-iii</h2>
+        <p><strong><u>Command:</u></strong> <code> Get-Counter "\PhysicalDisk(_Total)\Avg. Disk Queue Length"</code></p>
+        <p><strong><u>How to run it:</u></strong> Type the command and press Enter. Run it while your laptop 
+            feels slow to get a useful reading.</p>
         
-        <h2>Next: 5, 6, and 7 are coming soon</h2>
-        <p>I'll release it once it's ready.</p>
+        <div class="highlight-box">
+            <strong><u>What it does:</u></strong> Measures the average disk queue length. A consistently high 
+              number <b>(e.g. >2 for a single disk)</b> indicates the disk is overloaded and a performance bottleneck.
+        </div>
+
+        <h2>7. System File Integrity</h2>
+        <p><strong><u>Command:</u></strong> <code> sfc /scannow</code></p>
+        <p><strong><u>How to run it:</u></strong> Type <code>sfc /scannow</code> in PowerShell and press <b>Enter</b>. 
+            <em>(Note: Run this in an administrator PowerShell window)</em>.</p>
+
+        <div class="highlight-box">
+            <strong><u>What it does:</u></strong> While technically a <em>Command Prompt</em> (<b>CMD</b>) tool, it's 
+              essential for system health. It scans and repairs protected Windows system files. 
+              Corruption here can cause strange system behavior.
+        </div>
+
+        <h2>📝 Recap: How to Use This Information</h2>
+        <p>Here is a simple action plan based on what you might find:</p>
+
+        <div class="highlight-box">
+            <ul style="list-style-type: disc;">
+                <li>
+                    If <code>Get-PhysicalDisk</code> shows <b>"Warning"</b> or <b>"Unhealthy"</b>: This confirms 
+                    your earlier findings and suggests the <em>drive may need replacement soon</em>.
+                </li>
+                <li>
+                    If <code>Repair-Volume</code> finds <b>errors</b>: Run the command with <code>-OfflineScanAndFix</code> to
+                     repair them, which should <em>improve system stability</em>.
+                </li>
+                <li>
+                    If a specific process (like <b>Antimalware Service Executable</b> or a <b>browser</b>) 
+                    consistently tops the CPU/memory lists: That program is the likely <b>cause of 
+                    the slowdowns you are experiencing</b>.
+                </li>
+                <li>
+                    If <code>sfc /scannow</code> finds corrupt files: It will attempt to repair them automatically. 
+                    This can resolve <b>deep-seated OS issues</b>.
+                </li>
+            </ul>
+        </div>
+        
 
         <!-- CTA -->
         <div class="cta-blog">
