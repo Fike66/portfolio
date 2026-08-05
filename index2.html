@@ -94,36 +94,37 @@
     <!-- Floating confetti container -->
     <div class="confetti-container" id="confetti"></div>
 
+    <!-- ============================================ -->
+    <!-- MAIN CARD -->
+    <!-- ============================================ -->
     <div class="card-wrapper">
         <div class="wedding-card landscape">
             
-            <!-- ============================================ -->
             <!-- LEFT PANEL - Photo & Rings -->
-            <!-- ============================================ -->
             <div class="panel left-panel">
                 <!-- Rings Decoration -->
                 <div class="rings-decoration">
                     <div class="ring gold-ring">
                         <i class="fas fa-gem"></i>
                     </div>
-                    <div class="ring silver-ring">
+                    <div class="ring gold-ring">
                         <i class="fas fa-gem"></i>
                     </div>
                 </div>
                 
                 <!-- Photo Frame -->
                 <div class="photo-frame">
-                    <img src="wed.jpg" alt="Emily & James">
+                    <img src="wed.jpg" alt="Selam & Yohannes">
                     <div class="photo-glow"></div>
                 </div>
 
                 <!-- Floral Divider -->
                 <div class="floral-divider">
-                    <span>❀</span>
                     <span>✿</span>
                     <span>❀</span>
                     <span>✿</span>
                     <span>❀</span>
+                    <span>✿</span>
                 </div>
 
                 <!-- Date Badge -->
@@ -141,9 +142,7 @@
                 </div>
             </div>
 
-            <!-- ============================================ -->
             <!-- RIGHT PANEL - Details -->
-            <!-- ============================================ -->
             <div class="panel right-panel">
                 <div class="gold-border-top"></div>
 
@@ -163,9 +162,9 @@
                 </div>
 
                 <div class="divider-line">
-                    <span>✦</span>
-                    <span>✦</span>
-                    <span>✦</span>
+                    <span>💚</span>
+                    <span>✦💚</span>
+                    <span>✦💚</span>
                 </div>
 
                 <!-- Details Grid -->
@@ -173,21 +172,21 @@
                     <div class="detail-item">
                         <i class="fas fa-calendar-day"></i>
                         <div>
-                            <strong>Date</strong>
-                            <p>Saturday, October 17, 2026</p>
+                            <strong>ቀን</strong>
+                            <p>ቅዳሜ, ጥቅምት 7, 2019 ዓ.ም</p>
                         </div>
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-clock"></i>
                         <div>
-                            <strong>Time</strong>
-                            <p>3:00 PM - 11:00 PM</p>
+                            <strong>ሰአት</strong>
+                            <p>9:00 - 11:00</p>
                         </div>
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-map-pin"></i>
                         <div>
-                            <strong>ቦታው</strong>
+                            <strong>ቦታ</strong>
                             <p>The Grand Rose Garden</p>
                             <span class="venue-address">22 ማዞሪያ, አዲስ አበባ</span>
                         </div>
@@ -224,7 +223,7 @@
                         </button>
                     </div>
 
-                    <!-- Message Editor (hidden initially) -->
+                    <!-- Message Editor -->
                     <div class="message-editor" id="messageEditor">
                         <div class="editor-box">
                             <label>
@@ -237,10 +236,11 @@ Dear {GUEST_NAME},
 Selam & Yohannes are getting married! 🎉
 Join us on October 17, 2026 at 3:00 PM.
 
-Venue: The Grand Rose Garden, 22 Round Addis Ababa
+Place: The Grand Rose Garden, 22 Round Addis Ababa
 
 We can't wait to celebrate with you! 🥂
-View invitation: {INVITATION_LINK}</textarea>
+View invitation: {https://fike66.github.io/portfolio/index2.html}
+                            </textarea>
                             <button onclick="resetMessage()" class="btn-reset">
                                 <i class="fas fa-undo"></i> Reset to default
                             </button>
@@ -263,6 +263,87 @@ View invitation: {INVITATION_LINK}</textarea>
             </div>
         </div>
     </div>
+
+    <!-- ============================================ -->
+    <!-- 🎵 MUSIC PLAYER - OUTSIDE CARD AT BOTTOM -->
+    <!-- ============================================ -->
+    <div class="music-player-wrapper">
+        <div class="music-player">
+            <div class="player-toggle" onclick="togglePlayerVisibility()">
+                <i class="fas fa-music"></i>
+                <span class="toggle-label">Music</span>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            
+            <div class="player-body" id="playerBody">
+                <div class="player-header">
+                    <span class="player-title">❤️ Playlist</span>
+                    <span class="player-badge">♫</span>
+                </div>
+                
+                <div class="player-controls">
+                    <button class="play-btn" id="playBtn" onclick="togglePlay()">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    
+                    <div class="player-progress">
+                        <div class="progress-bar" id="progressBar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="time-display">
+                            <span id="currentTime">0:00</span>
+                            <span id="totalTime">0:00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="playlist">
+                    <div class="volume-control">
+                        <i class="fas fa-volume-up" onclick="toggleMute()"></i>
+                        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.7" oninput="changeVolume(this.value)">
+                    </div>
+                    <div class="song-item active" data-song="0" onclick="playSong(0)">
+                        <span class="song-number">1</span>
+                        <div class="song-info">
+                            <span class="song-name">Abinet A</span>
+                            <span class="song-artist">Abinet</span>
+                        </div>
+                        <span class="song-duration">4:30</span>
+                        <i class="fas fa-play-circle song-play-icon"></i>
+                    </div>
+                    <div class="song-item" data-song="1" onclick="playSong(1)">
+                        <span class="song-number">2</span>
+                        <div class="song-info">
+                            <span class="song-name">Tsegaye E</span>
+                            <span class="song-artist">Thegaye</span>
+                        </div>
+                        <span class="song-duration">10:13</span>
+                        <i class="fas fa-play-circle song-play-icon"></i>
+                    </div>
+                    <div class="song-item" data-song="3" onclick="playSong(1)">
+                        <span class="song-number">3</span>
+                        <div class="song-info">
+                            <span class="song-name">Perfect</span>
+                            <span class="song-artist">Ed Sheeran</span>
+                        </div>
+                        <span class="song-duration">4:23</span>
+                        <i class="fas fa-play-circle song-play-icon"></i>
+                    </div>  
+                </div>
+                </div>
+                
+                <div class="audio-wave" id="audioWave">
+                    <span></span><span></span><span></span>
+                    <span></span><span></span><span></span>
+                    <span></span><span></span><span></span>
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio element for playing music -->
+    <audio id="weddingAudio" loop></audio>
 
     <!-- ============================================ -->
     <!-- RSVP MODAL -->
