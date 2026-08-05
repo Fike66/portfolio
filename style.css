@@ -819,7 +819,7 @@ textarea {
 
 /* Wrapper - centered with smaller width */
 .music-player-wrapper {
-    width: 12%;
+    width: 15%;
     max-width: 150px;  /* Not same as card on mobile */
     margin: 16px auto 0;
     padding: 0 10px;
@@ -884,7 +884,7 @@ textarea {
 }
 
 .player-body.open {
-    max-height: 300px;
+    max-height: 200px;
     padding: 0 16px 16px;
 }
 
