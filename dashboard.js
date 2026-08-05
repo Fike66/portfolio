@@ -1,265 +1,484 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+// ============================================
+// GUEST DATA MANAGEMENT
+// ============================================
+let guests = [];
+let currentPage = 1;
+const itemsPerPage = 10;
+let filteredGuests = [];
+
+// Load guests from localStorage
+function loadGuests() {
+    const saved = localStorage.getItem('weddingGuests');
+    if (saved) {
+        guests = JSON.parse(saved);
+    } else {
+        // ============================================
+        // SAMPLE DATA WITH ETHIOPIAN NAMES
+        // ============================================
+        guests = [
+            { name: "Kibinesh Wolde", phone: "+2519844164", email: "kibuw@gmail.com", status: "confirmed", sent: true },
+            { name: "Dejene Maregn", phone: "+251923624656", email: "dejum@gmail.com", status: "pending", sent: true },
+            { name: "Sozit Mohammed", phone: "+251933232993", email: "sozim@gmail.com", status: "pending", sent: true },
+            { name: "Dinkines Maregn", phone: "+251949431434", email: "lucym@gmail.com", status: "declined", sent: false },
+            { name: "Gedion Tesfaye", phone: "+251935536747", email: "gedit@gmail.com", status: "pending", sent: false },
+            { name: "Yordianos Zelalem", phone: "+251942243886", email: "yordiz@gmail.com", status: "confirmed", sent: true }
+        ];
+        saveGuests();
+    }
+    filteredGuests = [...guests];
+    updateStats();
+    renderTable();
+}
+
+// Save guests to localStorage
+function saveGuests() {
+    localStorage.setItem('weddingGuests', JSON.stringify(guests));
+}
+
+// Update statistics
+function updateStats() {
+    document.getElementById('totalGuests').textContent = guests.length;
+    document.getElementById('confirmedGuests').textContent = guests.filter(g => g.status === 'confirmed').length;
+    document.getElementById('declinedGuests').textContent = guests.filter(g => g.status === 'declined').length;
+    document.getElementById('pendingGuests').textContent = guests.filter(g => g.status === 'pending').length;
+    document.getElementById('guestCount').textContent = `Showing ${filteredGuests.length} guests`;
+}
+
+// ============================================
+// TABLE RENDERING
+// ============================================
+function renderTable() {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageItems = filteredGuests.slice(start, end);
     
-    <!-- Mobile Meta Tags -->
-    <meta name="theme-color" content="#f5f0eb">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Guest Dashboard">
-    <meta name="mobile-web-app-capable" content="yes">
+    const tbody = document.getElementById('guestTableBody');
     
-    <title>👥 Wedding Guest Dashboard</title>
-    <meta name="description" content="Manage guest list for Emily & James's wedding.">
+    if (pageItems.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align: center; padding: 30px; color: #aaa;">
+                    <i class="fas fa-inbox" style="font-size: 30px; display: block; margin-bottom: 8px;"></i>
+                    No guests found.
+                </td>
+            </tr>
+        `;
+        return;
+    }
     
-    <!-- Open Graph -->
-    <meta property="og:title" content="👥 Wedding Guest Dashboard">
-    <meta property="og:description" content="Manage guests for Emily & James's wedding.">
-    <meta property="og:type" content="website">
+    tbody.innerHTML = pageItems.map((guest, index) => {
+        const realIndex = guests.indexOf(guest);
+        const statusClass = `status-${guest.status}`;
+        const statusIcon = {
+            'confirmed': '✅',
+            'pending': '⏳',
+            'declined': '❌'
+        }[guest.status] || '❓';
+        
+        return `
+            <tr>
+                <td><input type="checkbox" class="guest-checkbox" data-index="${realIndex}"></td>
+                <td><strong>${escapeHtml(guest.name)}</strong></td>
+                <td><a href="https://wa.me/${guest.phone.replace(/\D/g, '')}" target="_blank" style="color: #25D366; text-decoration: none;">${escapeHtml(guest.phone)}</a></td>
+                <td>${guest.email ? escapeHtml(guest.email) : '—'}</td>
+                <td><span class="status-badge ${statusClass}">${statusIcon} ${guest.status}</span></td>
+                <td>${guest.sent ? '📨 Sent' : '⏳ Pending'}</td>
+                <td>
+                    <button class="action-btn" onclick="editGuest(${realIndex})" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="action-btn delete" onclick="deleteGuest(${realIndex})" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="action-btn whatsapp" onclick="sendSingleReminder(${realIndex})" title="Send WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                    <button class="action-btn" onclick="quickStatusUpdate(${realIndex}, 'confirmed')" title="Confirm" style="color: #27ae60;">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="action-btn" onclick="quickStatusUpdate(${realIndex}, 'declined')" title="Decline" style="color: #e74c3c;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👥</text></svg>">
+    const totalPages = Math.ceil(filteredGuests.length / itemsPerPage);
+    document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages || 1}`;
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ============================================
+// FILTERING & SEARCH
+// ============================================
+function filterGuests() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const status = document.getElementById('statusFilter').value;
     
-    <!-- Styles -->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="dashboard.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    filteredGuests = guests.filter(guest => {
+        const matchesSearch = guest.name.toLowerCase().includes(search) || 
+                             guest.phone.includes(search) ||
+                             (guest.email && guest.email.toLowerCase().includes(search));
+        const matchesStatus = status === 'all' || guest.status === status;
+        return matchesSearch && matchesStatus;
+    });
     
-    <style>
-        html {
-            -webkit-text-size-adjust: 100%;
-            -moz-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-            text-size-adjust: 100%;
+    currentPage = 1;
+    renderTable();
+    updateStats();
+}
+
+// ============================================
+// CSV IMPORT/EXPORT
+// ============================================
+function importCSV(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const text = e.target.result;
+        const lines = text.split('\n').filter(line => line.trim());
+        
+        if (lines.length < 2) {
+            showToast('⚠️ CSV file is empty or invalid.');
+            return;
         }
         
-        input, select, textarea {
-            font-size: 16px !important;
+        const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+        const nameIndex = headers.findIndex(h => h.includes('name') || h.includes('guest'));
+        const phoneIndex = headers.findIndex(h => h.includes('phone') || h.includes('mobile') || h.includes('tel'));
+        const emailIndex = headers.findIndex(h => h.includes('email'));
+        
+        if (nameIndex === -1 || phoneIndex === -1) {
+            showToast('⚠️ CSV must have "Name" and "Phone" columns.');
+            return;
         }
         
-        button, 
-        input, 
-        select, 
-        textarea {
-            touch-action: manipulation;
+        let imported = 0;
+        let errors = 0;
+        
+        for (let i = 1; i < lines.length; i++) {
+            const columns = parseCSVLine(lines[i]);
+            if (columns.length <= Math.max(nameIndex, phoneIndex)) {
+                errors++;
+                continue;
+            }
+            
+            const name = columns[nameIndex]?.trim();
+            const phone = columns[phoneIndex]?.trim();
+            const email = emailIndex !== -1 ? columns[emailIndex]?.trim() || '' : '';
+            
+            if (name && phone) {
+                guests.push({ name, phone, email, status: 'pending', sent: false });
+                imported++;
+            } else {
+                errors++;
+            }
         }
-    </style>
-</head>
-<body>
-    <div class="dashboard-container">
-        <!-- Header -->
-        <div class="dashboard-header">
-            <div class="header-left">
-                <h1><i class="fas fa-users" style="color: var(--gold);"></i> Guest Dashboard | የእንግዳ ዳሽቦርድ</h1>
-                <span class="wedding-date">💍  ዮሃንስ እና ሰላም · ጥቅምት 18, 2026</span>
-            </div>
-            <div class="header-right">
-                <button class="btn-primary" onclick="exportGuestList()">
-                    <i class="fas fa-file-export"></i> Export
-                </button>
-                <button class="btn-secondary" onclick="window.location.href='index.html'">
-                    <i class="fas fa-arrow-left"></i> Back
-                </button>
-            </div>
-        </div>
+        
+        saveGuests();
+        filteredGuests = [...guests];
+        updateStats();
+        renderTable();
+        
+        showToast(errors > 0 ? `✅ Imported ${imported} guests (${errors} errors)` : `✅ Imported ${imported} guests!`);
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+}
 
-        <!-- Stats Cards -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon" style="background: rgba(212, 168, 83, 0.15); color: var(--gold);">
-                    <i class="fas fa-user-friends"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 id="totalGuests">0</h3>
-                    <p>Total Guests</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="background: rgba(46, 213, 115, 0.15); color: #2ed573;">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 id="confirmedGuests">0</h3>
-                    <p>Confirmed</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="background: rgba(255, 107, 107, 0.15); color: #ff6b6b;">
-                    <i class="fas fa-times-circle"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 id="declinedGuests">0</h3>
-                    <p>Declined</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="background: rgba(54, 164, 235, 0.15); color: #36a4eb;">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 id="pendingGuests">0</h3>
-                    <p>Pending</p>
-                </div>
-            </div>
-        </div>
+function parseCSVLine(line) {
+    const result = [];
+    let current = '';
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        if (char === '"') inQuotes = !inQuotes;
+        else if (char === ',' && !inQuotes) { result.push(current); current = ''; }
+        else current += char;
+    }
+    result.push(current);
+    return result;
+}
 
-        <!-- Actions Bar -->
-        <div class="actions-bar">
-            <div class="action-group">
-                <button class="btn-primary" onclick="document.getElementById('csvInput').click()">
-                    <i class="fas fa-upload"></i> Import CSV
-                </button>
-                <input type="file" id="csvInput" accept=".csv" style="display: none;" onchange="importCSV(event)">
-                <button class="btn-secondary" onclick="addGuestManually()">
-                    <i class="fas fa-plus"></i> Add Guest
-                </button>
-                <button class="btn-secondary" onclick="openReminderModal()">
-                    <i class="fas fa-bell"></i> Send Reminders
-                </button>
-                <button class="btn-secondary" onclick="resetToSampleData()" style="border-color: var(--gold);">
-                    <i class="fas fa-undo"></i> Reset Data
-                </button>
-            </div>
-            <div class="search-group">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search guests..." oninput="filterGuests()">
-                <select id="statusFilter" onchange="filterGuests()">
-                    <option value="all">All Status</option>
-                    <option value="pending">Pending</option>
-                    <option value="confirmed">Confirmed</option>
-                    <option value="declined">Declined</option>
-                </select>
-            </div>
-        </div>
+function exportGuestList() {
+    if (guests.length === 0) {
+        showToast('⚠️ No guests to export.');
+        return;
+    }
+    
+    const headers = ['Name', 'Phone', 'Email', 'Status', 'Sent'];
+    const csvRows = [headers.join(',')];
+    guests.forEach(guest => {
+        csvRows.push([
+            `"${guest.name}"`, `"${guest.phone}"`, `"${guest.email || ''}"`,
+            guest.status, guest.sent ? 'Yes' : 'No'
+        ].join(','));
+    });
+    
+    const csvText = csvRows.join('\n');
+    const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `wedding_guests_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('📤 Guest list exported!');
+}
 
-        <!-- Guest Table -->
-        <div class="table-container">
-            <table id="guestTable">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox" id="selectAll" onchange="toggleAll()"></th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th>Sent</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="guestTableBody">
-                    <!-- Guests will be rendered here -->
-                </tbody>
-            </table>
-        </div>
+// ============================================
+// ADD/EDIT/DELETE GUESTS
+// ============================================
+function addGuestManually() {
+    document.getElementById('modalTitle').innerHTML = '<i class="fas fa-user-plus"></i> Add Guest';
+    document.getElementById('editIndex').value = '-1';
+    document.getElementById('guestForm').reset();
+    document.getElementById('guestModal').classList.add('show');
+}
 
-        <!-- Table Footer -->
-        <div class="table-footer">
-            <span id="guestCount">Showing 0 guests</span>
-            <div class="pagination">
-                <button onclick="changePage(-1)"><i class="fas fa-chevron-left"></i></button>
-                <span id="pageInfo">Page 1</span>
-                <button onclick="changePage(1)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-            <div class="pagination">
-            <p>Developed by | Fekadu Wolde, Addis Ababa, Ethiopia</p>
-            </div>
-        </div>
-    </div>
+function editGuest(index) {
+    const guest = guests[index];
+    document.getElementById('modalTitle').innerHTML = '<i class="fas fa-user-edit"></i> Edit Guest';
+    document.getElementById('editIndex').value = index;
+    document.getElementById('guestName').value = guest.name;
+    document.getElementById('guestPhone').value = guest.phone;
+    document.getElementById('guestEmail').value = guest.email || '';
+    document.getElementById('guestStatus').value = guest.status;
+    document.getElementById('guestModal').classList.add('show');
+}
 
-    <!-- Guest Modal (Add/Edit) -->
-    <div class="modal" id="guestModal">
-        <div class="modal-content" style="max-width: 500px;">
-            <span class="close" onclick="closeGuestModal()">&times;</span>
-            <h2 id="modalTitle"><i class="fas fa-user-plus"></i> Add Guest</h2>
+function deleteGuest(index) {
+    if (confirm(`Delete ${guests[index].name}?`)) {
+        guests.splice(index, 1);
+        saveGuests();
+        filteredGuests = [...guests];
+        updateStats();
+        renderTable();
+        showToast('🗑️ Guest deleted.');
+    }
+}
+
+function saveGuest(event) {
+    event.preventDefault();
+    const index = parseInt(document.getElementById('editIndex').value);
+    const name = document.getElementById('guestName').value.trim();
+    const phone = document.getElementById('guestPhone').value.trim();
+    const email = document.getElementById('guestEmail').value.trim();
+    const status = document.getElementById('guestStatus').value;
+    
+    if (!name || !phone) {
+        showToast('⚠️ Name and Phone are required.');
+        return;
+    }
+    
+    const guestData = { name, phone, email, status, sent: false };
+    
+    if (index === -1) {
+        guests.push(guestData);
+        showToast(`👋 Added ${name}!`);
+    } else {
+        guestData.sent = guests[index].sent;
+        guests[index] = guestData;
+        showToast(`✏️ Updated ${name}!`);
+    }
+    
+    saveGuests();
+    filteredGuests = [...guests];
+    updateStats();
+    renderTable();
+    closeGuestModal();
+}
+
+function closeGuestModal() {
+    document.getElementById('guestModal').classList.remove('show');
+}
+
+// ============================================
+// QUICK STATUS UPDATE
+// ============================================
+function quickStatusUpdate(index, newStatus) {
+    const guest = guests[index];
+    const labels = { 'confirmed': 'Confirmed ✅', 'declined': 'Declined ❌', 'pending': 'Pending ⏳' };
+    if (confirm(`Update ${guest.name} to "${labels[newStatus]}"?`)) {
+        guest.status = newStatus;
+        saveGuests();
+        renderTable();
+        updateStats();
+        showToast(`✅ ${guest.name} is now ${newStatus}!`);
+    }
+}
+
+// ============================================
+// RESET TO SAMPLE DATA
+// ============================================
+function resetToSampleData() {
+    if (confirm('⚠️ Reset to sample data? This will overwrite all current data.')) {
+        const sampleGuests = [
+            { name: "Fekadu Wolde", phone: "+251911223344", email: "fekadu@email.com", status: "confirmed", sent: true },
+            { name: "Tigist Hailu", phone: "+251922334455", email: "tigist@email.com", status: "pending", sent: false },
+            { name: "Abebe Bekele", phone: "+251933445566", email: "abebe@email.com", status: "pending", sent: false },
+            { name: "Meron Tesfaye", phone: "+251944556677", email: "meron@email.com", status: "declined", sent: true },
+            { name: "Dawit Solomon", phone: "+251955667788", email: "dawit@email.com", status: "pending", sent: false },
+            { name: "Hana Girmay", phone: "+251966778899", email: "hana@email.com", status: "confirmed", sent: true },
+            { name: "Biruk Alemayehu", phone: "+251977889900", email: "biruk@email.com", status: "pending", sent: false },
+            { name: "Selam Tesfaye", phone: "+251988990011", email: "selam@email.com", status: "pending", sent: false },
+            { name: "Henok Amanuel", phone: "+251999001122", email: "henok@email.com", status: "confirmed", sent: false },
+            { name: "Mekdes Haileselassie", phone: "+251900112233", email: "mekdes@email.com", status: "pending", sent: false }
+        ];
+        localStorage.setItem('weddingGuests', JSON.stringify(sampleGuests));
+        guests = sampleGuests;
+        filteredGuests = [...guests];
+        updateStats();
+        renderTable();
+        showToast('🔄 Reset to sample Ethiopian guest data!');
+    }
+}
+
+// ============================================
+// WHATSAPP SENDING
+// ============================================
+function sendSingleReminder(index) {
+    const guest = guests[index];
+    const message = `Friendly Reminder! 💍
+
+Dear ${guest.name},
+
+በጥቅምት 17, 2018 በሚደረገው የ ዮሃንስ ሸዋ እና የሰላም ማረኝ ጋብቻ ፕሮግራም ላይ እንድትገኙ በአክብሮት ጠርተንዎታል (ሰአት ከ 9:00 - 11:00)
+
+ቦታው: The Grand Rose Garden, 22 ማዞሪያ, አዲስ አበባ
+
+Please RSVP if you haven't already: ${window.location.href.replace('dashboard.html', 'index.html')}
+
+Can't wait to celebrate with you! 🥂`;
+    
+    const encodedMessage = encodeURIComponent(message);
+    const phone = guest.phone.replace(/\D/g, '');
+    window.open(`https://wa.me/${phone}?text=${encodedMessage}`, '_blank');
+    
+    guest.sent = true;
+    saveGuests();
+    renderTable();
+    showToast(`📨 Sent to ${guest.name}!`);
+}
+
+function openReminderModal() {
+    document.getElementById('reminderModal').classList.add('show');
+}
+
+function closeReminderModal() {
+    document.getElementById('reminderModal').classList.remove('show');
+}
+
+function sendReminders(event) {
+    event.preventDefault();
+    
+    const type = document.getElementById('reminderType').value;
+    let message = document.getElementById('reminderMessage').value;
+    
+    let recipients = [];
+    if (type === 'all') recipients = guests;
+    else if (type === 'pending') recipients = guests.filter(g => g.status === 'pending');
+    else if (type === 'confirmed') recipients = guests.filter(g => g.status === 'confirmed');
+    else if (type === 'declined') recipients = guests.filter(g => g.status === 'declined');
+    
+    if (recipients.length === 0) {
+        showToast(`⚠️ No guests found with status: ${type}`);
+        return;
+    }
+    
+    const labels = { 'all': 'all guests', 'pending': 'pending', 'confirmed': 'confirmed', 'declined': 'declined' };
+    if (!confirm(`Send to ${recipients.length} ${labels[type]} guests?`)) return;
+    
+    let sentCount = 0;
+    recipients.forEach((guest, index) => {
+        setTimeout(() => {
+            const personalized = message
+                .replace(/\{GUEST_NAME\}/g, guest.name)
+                .replace(/\{INVITATION_LINK\}/g, window.location.href.replace('dashboard.html', 'index.html'));
             
-            <form id="guestForm" onsubmit="saveGuest(event)">
-                <input type="hidden" id="editIndex" value="-1">
-                
-                <div class="form-group">
-                    <label for="guestName">Full Name</label>
-                    <input type="text" id="guestName" class="form-control" placeholder="e.g., Fekadu Wolde" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="guestPhone">Phone Number (with country code)</label>
-                    <input type="tel" id="guestPhone" class="form-control" placeholder="e.g., +251911223344" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="guestEmail">Email Address</label>
-                    <input type="email" id="guestEmail" class="form-control" placeholder="e.g., fekadu@email.com">
-                </div>
-                
-                <div class="form-group">
-                    <label for="guestStatus">Status</label>
-                    <select id="guestStatus" class="form-control">
-                        <option value="pending">Pending</option>
-                        <option value="confirmed">Confirmed</option>
-                        <option value="declined">Declined</option>
-                    </select>
-                </div>
-                
-                <div style="display: flex; gap: 12px; margin-top: 10px;">
-                    <button type="submit" class="btn-primary" style="flex: 1; justify-content: center;">
-                        <i class="fas fa-save"></i> Save
-                    </button>
-                    <button type="button" class="btn-secondary" onclick="closeGuestModal()" style="flex: 0.5;">
-                        Cancel
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Reminder Modal -->
-    <div class="modal" id="reminderModal">
-        <div class="modal-content" style="max-width: 550px;">
-            <span class="close" onclick="closeReminderModal()">&times;</span>
-            <h2 style="margin-bottom: 20px;">
-                <i class="fas fa-bell" style="color: var(--gold);"></i> Send Reminders
-            </h2>
+            const phone = guest.phone.replace(/\D/g, '');
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(personalized)}`, '_blank');
             
-            <form id="reminderForm" onsubmit="sendReminders(event)">
-                <div class="form-group">
-                    <label for="reminderType">Reminder Type</label>
-                    <select id="reminderType" class="form-control">
-                        <option value="all">All Guests</option>
-                        <option value="pending">Only Pending</option>
-                        <option value="confirmed">Only Confirmed</option>
-                        <option value="declined">Only Declined</option>
-                    </select>
-                </div>
+            guest.sent = true;
+            sentCount++;
+            if (sentCount === recipients.length) {
+                saveGuests();
+                renderTable();
+                updateStats();
+                closeReminderModal();
+                showToast(`✅ Sent ${sentCount} reminders!`);
+            }
+        }, index * 1500);
+    });
+}
 
-                <div class="form-group">
-                    <label for="reminderMessage">Message</label>
-                    <textarea id="reminderMessage" rows="5" class="form-control" style="resize: vertical; min-height: 120px; font-family: 'Inter', sans-serif;">Friendly Reminder! 💍
+// ============================================
+// PAGINATION
+// ============================================
+function changePage(delta) {
+    const totalPages = Math.ceil(filteredGuests.length / itemsPerPage);
+    const newPage = currentPage + delta;
+    if (newPage >= 1 && newPage <= totalPages) {
+        currentPage = newPage;
+        renderTable();
+    }
+}
 
-የተከበሩ {GUEST_NAME},
+function toggleAll() {
+    const checked = document.getElementById('selectAll').checked;
+    document.querySelectorAll('.guest-checkbox').forEach(cb => cb.checked = checked);
+}
 
-በጥቅምት 18, 2018 በሚደረገው የ ዮሃንስ ሸዋ እና የሰላም ማረኝ ጋብቻ ፕሮግራም ላይ እንድትገኙ በአክብሮት ጠርተንዎታል (ሰአት ከ 9:00 - 11:00)
+// ============================================
+// TOAST NOTIFICATIONS
+// ============================================
+function showToast(message) {
+    let toast = document.getElementById('toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) translateY(20px)';
+    }, 3000);
+}
 
-ቦታው: The Grand Rose Garden, 22 ማዞሪያ አዲስ አበባ
+// ============================================
+// KEYBOARD SHORTCUTS
+// ============================================
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeGuestModal();
+        closeReminderModal();
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+        e.preventDefault();
+        document.getElementById('searchInput').focus();
+    }
+});
 
-Please respond if you haven't already: {https://fike66.github.io/portfolio/index2.html}
+// ============================================
+// INITIALIZE
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    loadGuests();
+    setTimeout(() => document.getElementById('searchInput').focus(), 500);
+});
 
-Can't wait to celebrate with you! 🥂</textarea>
-                </div>
-
-                <div style="display: flex; gap: 12px; margin-top: 20px;">
-                    <button type="submit" class="btn-primary" style="flex: 1; justify-content: center;">
-                        <i class="fab fa-whatsapp"></i> Send via WhatsApp
-                    </button>
-                    <button type="button" class="btn-secondary" onclick="closeReminderModal()" style="flex: 0.5;">
-                        Cancel
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script src="dashboard.js"></script>
-</body>
-</html>
+console.log('💍 Wedding Guest Dashboard loaded!');
+console.log('📊 Commands: guests, exportGuestList(), addGuestManually()');
