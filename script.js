@@ -242,4 +242,271 @@ console.log('  - resetMessage(): Reset WhatsApp message');
 console.log('');
 console.log('⌨️ Keyboard shortcuts:');
 console.log('  - ESC: Close modals');
+
+
+// ============================================
+// MUSIC PLAYER
+// ============================================
+
+// ============================================
+// SONG DATA (Replace with your actual MP3 URLs)
+// ============================================
+const songs = [
+    {
+        name: "Abinet A",
+        artist: "Abinet",
+        url: "AbinetA.mp3",  // <- Your local file
+        duration: "6:27"
+    },
+    {
+        name: "Tsegaye E",
+        artist: "tsegaye",
+        url: "tsegaye.mp3",
+        duration: "10:13"
+    },
+    {
+        name: "Perfect",
+        artist: "Ed Sheeran",
+        url: "EdSheeran.mp3",
+        duration: "4:23"
+    },
+];
+
+// ============================================
+// PLAYER STATE
+// ============================================
+let currentSongIndex = 0;
+let isPlaying = false;
+let isMuted = false;
+let audio = document.getElementById('weddingAudio');
+let progressInterval = null;
+
+// ============================================
+// INITIALIZE PLAYER
+// ============================================
+function initPlayer() {
+    // Load first song
+    loadSong(currentSongIndex);
+    
+    // Set up audio event listeners
+    audio.addEventListener('loadedmetadata', function() {
+        updateDurationDisplay();
+    });
+    
+    audio.addEventListener('timeupdate', function() {
+        updateProgress();
+    });
+    
+    audio.addEventListener('ended', function() {
+        playNextSong();
+    });
+    
+    audio.addEventListener('play', function() {
+        document.getElementById('playBtn').innerHTML = '<i class="fas fa-pause"></i>';
+        document.getElementById('playBtn').classList.add('playing');
+        document.getElementById('audioWave').classList.add('active');
+        isPlaying = true;
+    });
+    
+    audio.addEventListener('pause', function() {
+        document.getElementById('playBtn').innerHTML = '<i class="fas fa-play"></i>';
+        document.getElementById('playBtn').classList.remove('playing');
+        document.getElementById('audioWave').classList.remove('active');
+        isPlaying = false;
+    });
+}
+
+// ============================================
+// LOAD SONG
+// ============================================
+function loadSong(index) {
+    if (index < 0 || index >= songs.length) return;
+    
+    currentSongIndex = index;
+    const song = songs[index];
+    audio.src = song.url;
+    audio.load();
+    
+    // Update playlist highlighting
+    document.querySelectorAll('.song-item').forEach((item, i) => {
+        item.classList.toggle('active', i === index);
+    });
+    
+    // Update duration display
+    setTimeout(updateDurationDisplay, 500);
+}
+
+// ============================================
+// PLAY/PAUSE
+// ============================================
+function togglePlay() {
+    if (audio.paused) {
+        audio.play().catch(e => {
+            console.log('Autoplay prevented:', e);
+            showToast('🎵 Tap play to start the music!');
+        });
+    } else {
+        audio.pause();
+    }
+}
+
+function playSong(index) {
+    if (index === currentSongIndex) {
+        togglePlay();
+        return;
+    }
+    loadSong(index);
+    audio.play().catch(e => console.log('Play prevented:', e));
+}
+
+function playNextSong() {
+    const nextIndex = (currentSongIndex + 1) % songs.length;
+    playSong(nextIndex);
+}
+
+// ============================================
+// PROGRESS BAR
+// ============================================
+function updateProgress() {
+    if (audio.duration) {
+        const percent = (audio.currentTime / audio.duration) * 100;
+        document.getElementById('progressFill').style.width = percent + '%';
+        document.getElementById('currentTime').textContent = formatTime(audio.currentTime);
+    }
+}
+
+function updateDurationDisplay() {
+    if (audio.duration) {
+        document.getElementById('totalTime').textContent = formatTime(audio.duration);
+        // Update song duration in playlist
+        const duration = formatTime(audio.duration);
+        document.querySelectorAll('.song-item')[currentSongIndex].querySelector('.song-duration').textContent = duration;
+    }
+}
+
+function formatTime(seconds) {
+    if (isNaN(seconds) || !isFinite(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+// ============================================
+// VOLUME CONTROL
+// ============================================
+function changeVolume(value) {
+    audio.volume = value;
+    isMuted = value === 0;
+    updateVolumeIcon();
+}
+
+function toggleMute() {
+    isMuted = !isMuted;
+    if (isMuted) {
+        audio.volume = 0;
+        document.getElementById('volumeSlider').value = 0;
+    } else {
+        audio.volume = 0.7;
+        document.getElementById('volumeSlider').value = 0.7;
+    }
+    updateVolumeIcon();
+}
+
+function updateVolumeIcon() {
+    const icon = document.querySelector('.volume-control i');
+    if (isMuted || audio.volume === 0) {
+        icon.className = 'fas fa-volume-mute';
+    } else if (audio.volume < 0.5) {
+        icon.className = 'fas fa-volume-down';
+    } else {
+        icon.className = 'fas fa-volume-up';
+    }
+}
+
+// ============================================
+// PROGRESS BAR CLICK (Seek)
+// ============================================
+document.querySelector('.progress-bar').addEventListener('click', function(e) {
+    const rect = this.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percent = x / rect.width;
+    if (audio.duration) {
+        audio.currentTime = percent * audio.duration;
+    }
+});
+
+// ============================================
+// KEYBOARD SHORTCUTS FOR MUSIC
+// ============================================
+document.addEventListener('keydown', function(e) {
+    // Space bar to toggle play
+    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+        if (e.key === ' ' || e.key === 'Space') {
+            e.preventDefault();
+            togglePlay();
+        }
+        // Arrow right/left to seek
+        if (e.key === 'ArrowRight') {
+            audio.currentTime = Math.min(audio.currentTime + 5, audio.duration || 0);
+        }
+        if (e.key === 'ArrowLeft') {
+            audio.currentTime = Math.max(audio.currentTime - 5, 0);
+        }
+    }
+});
+
+// ============================================
+// AUTO-PLAY ON FIRST VISIT
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    // Try to auto-play after user interaction
+    const autoPlay = () => {
+        audio.play().catch(() => {
+            console.log('Auto-play blocked by browser. Tap play to start.');
+        });
+        document.removeEventListener('click', autoPlay);
+        document.removeEventListener('touchstart', autoPlay);
+    };
+    
+    // Auto-play on first user interaction (required by modern browsers)
+    document.addEventListener('click', autoPlay);
+    document.addEventListener('touchstart', autoPlay);
+    
+    // Init player
+    setTimeout(initPlayer, 500);
+});
+
+// ============================================
+// CONSOLE HELP FOR MUSIC
+// ============================================
+console.log('🎵 Music Player Controls:');
+console.log('  - Space: Play/Pause');
+console.log('  - Arrow Right/Left: Seek forward/backward');
+console.log('  - Click song: Play that song');
+console.log('  - Volume slider: Adjust volume');
+
+
 console.log('  - Ctrl+Enter: Send WhatsApp');
+
+// ============================================
+// PLAYER VISIBILITY TOGGLE
+// ============================================
+let isPlayerOpen = false;
+
+function togglePlayerVisibility() {
+    isPlayerOpen = !isPlayerOpen;
+    const body = document.getElementById('playerBody');
+    const icon = document.querySelector('.toggle-icon');
+    
+    if (isPlayerOpen) {
+        body.classList.add('open');
+        icon.classList.add('open');
+    } else {
+        body.classList.remove('open');
+        icon.classList.remove('open');
+    }
+}
+
+// Auto-open player on first visit (optional)
+// Uncomment to auto-open when user clicks play
+// setTimeout(() => togglePlayerVisibility(), 1000);
