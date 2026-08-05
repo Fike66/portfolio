@@ -100,7 +100,7 @@ function resetMessage() {
 Dear {GUEST_NAME},
 
 Selam & Yohannes are getting married! 🎉
-Join us on October 18, 2026 at 3:00 PM.
+Join us on October 17, 2026 at 3:00 PM.
 
 Venue: The Grand Rose Garden, 22 Round Addis Ababa
 
@@ -233,7 +233,7 @@ function showToast(message) {
 // ============================================
 // CONSOLE HELP
 // ============================================
-console.log('💍 Welcome to Selam & Yohannes\'s Wedding!');
+console.log('💍 Welcome to Emily & James\'s Wedding!');
 console.log('📋 Quick commands:');
 console.log('  - setGuestName(): Personalize the invitation');
 console.log('  - showRSVP(): Open RSVP form');
@@ -243,12 +243,3 @@ console.log('');
 console.log('⌨️ Keyboard shortcuts:');
 console.log('  - ESC: Close modals');
 console.log('  - Ctrl+Enter: Send WhatsApp');
-
-// ============================================
-// DYNAMIC YEAR UPDATE
-// ============================================
-document.querySelectorAll('.date-badge, .detail-item p').forEach(el => {
-    if (el.textContent.includes('2026')) {
-        // Keep as is
-    }
-});
