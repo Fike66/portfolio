@@ -2,17 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Enhanced viewport for all devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-<!-- Additional mobile meta tags -->
-    <meta name="theme-color" content="#2c1810">
+    
+    <!-- Mobile Meta Tags -->
+    <meta name="theme-color" content="#f5f0eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Guest Dashboard">
+    <meta name="mobile-web-app-capable" content="yes">
+    
     <title>👥 Wedding Guest Dashboard</title>
+    <meta name="description" content="Manage guest list for Emily & James's wedding.">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="👥 Wedding Guest Dashboard">
+    <meta property="og:description" content="Manage guests for Emily & James's wedding.">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👥</text></svg>">
+    
+    <!-- Styles -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        html {
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+        
+        input, select, textarea {
+            font-size: 16px !important;
+        }
+        
+        button, 
+        input, 
+        select, 
+        textarea {
+            touch-action: manipulation;
+        }
+    </style>
 </head>
 <body>
     <div class="dashboard-container">
@@ -20,14 +54,14 @@
         <div class="dashboard-header">
             <div class="header-left">
                 <h1><i class="fas fa-users" style="color: var(--gold);"></i> Guest Dashboard | የእንግዳ ዳሽቦርድ</h1>
-                <span class="wedding-date">💍 ዮሃንስ እና ሰላም · ጥቅምት 18, 2026</span>
+                <span class="wedding-date">💍  ዮሃንስ እና ሰላም · ጥቅምት 18, 2026</span>
             </div>
             <div class="header-right">
                 <button class="btn-primary" onclick="exportGuestList()">
                     <i class="fas fa-file-export"></i> Export
                 </button>
-                <button class="btn-secondary" onclick="window.location.href='index2.html'">
-                    <i class="fas fa-arrow-left"></i> Back to Invitation
+                <button class="btn-secondary" onclick="window.location.href='index.html'">
+                    <i class="fas fa-arrow-left"></i> Back
                 </button>
             </div>
         </div>
@@ -85,6 +119,9 @@
                 <button class="btn-secondary" onclick="openReminderModal()">
                     <i class="fas fa-bell"></i> Send Reminders
                 </button>
+                <button class="btn-secondary" onclick="resetToSampleData()" style="border-color: var(--gold);">
+                    <i class="fas fa-undo"></i> Reset Data
+                </button>
             </div>
             <div class="search-group">
                 <i class="fas fa-search"></i>
@@ -127,7 +164,7 @@
                 <button onclick="changePage(1)"><i class="fas fa-chevron-right"></i></button>
             </div>
             <div class="pagination">
-            <p>Developed by | Fekadu Wolde | Ethiopia</p>
+            <p>Developed by | Fekadu Wolde, Addis Ababa, Ethiopia</p>
             </div>
         </div>
     </div>
@@ -143,17 +180,17 @@
                 
                 <div class="form-group">
                     <label for="guestName">Full Name</label>
-                    <input type="text" id="guestName" class="form-control" placeholder="e.g., Sarah Johnson" required>
+                    <input type="text" id="guestName" class="form-control" placeholder="e.g., Fekadu Wolde" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="guestPhone">Phone Number (with country code)</label>
-                    <input type="tel" id="guestPhone" class="form-control" placeholder="e.g., +1234567890" required>
+                    <input type="tel" id="guestPhone" class="form-control" placeholder="e.g., +251911223344" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="guestEmail">Email Address</label>
-                    <input type="email" id="guestEmail" class="form-control" placeholder="e.g., sarah@email.com">
+                    <input type="email" id="guestEmail" class="form-control" placeholder="e.g., fekadu@email.com">
                 </div>
                 
                 <div class="form-group">
@@ -186,7 +223,6 @@
             </h2>
             
             <form id="reminderForm" onsubmit="sendReminders(event)">
-                <!-- Reminder Type -->
                 <div class="form-group">
                     <label for="reminderType">Reminder Type</label>
                     <select id="reminderType" class="form-control">
@@ -197,14 +233,13 @@
                     </select>
                 </div>
 
-                <!-- Message -->
                 <div class="form-group">
                     <label for="reminderMessage">Message</label>
                     <textarea id="reminderMessage" rows="5" class="form-control" style="resize: vertical; min-height: 120px; font-family: 'Inter', sans-serif;">Friendly Reminder! 💍
 
 የተከበሩ {GUEST_NAME},
 
-በጥቅምት 18, 2018 በሚደረገው የ ዮሃንስ ሸዋ እና የሰላም ማረኝ ጋብቻ ፕሮግራም ላይ እንድትገኙ በአክብሮት ጠርተንዎታል (ሰአት ከ 9:00 - 11:00)
+በጥቅምት 17, 2018 በሚደረገው የ ዮሃንስ ሸዋ እና የሰላም ማረኝ ጋብቻ ፕሮግራም ላይ እንድትገኙ በአክብሮት ጠርተንዎታል (ሰአት ከ 9:00 - 11:00)
 
 ቦታው: The Grand Rose Garden, 22 ማዞሪያ አዲስ አበባ
 
@@ -213,7 +248,6 @@ Please respond if you haven't already: {https://fike66.github.io/portfolio/index
 Can't wait to celebrate with you! 🥂</textarea>
                 </div>
 
-                <!-- Buttons -->
                 <div style="display: flex; gap: 12px; margin-top: 20px;">
                     <button type="submit" class="btn-primary" style="flex: 1; justify-content: center;">
                         <i class="fab fa-whatsapp"></i> Send via WhatsApp
