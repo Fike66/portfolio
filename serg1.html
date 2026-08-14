@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="am">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Wedding of Yohannes and Selam</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Sans+Ethiopic:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    
+     <style>
+/* =========================================
+   BASIC RESET
+========================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    background: #d8cdbb;
+
+    color: #4b321c;
+
+    font-family:
+        "Noto Sans Ethiopic",
+        sans-serif;
+}
+
+
+/* =========================================
+   MAIN INVITATION
+========================================= */
+
+.invitation {
+
+    width: min(1200px, 100%);
+
+    background-color:
+        linear-gradient(
+            135deg,
+            #efc87a,
+            #f8f0df
+        );
+
+    display: grid;
+
+    grid-template-columns:
+        42% 58%;
+
+    background: #f8f0df;
+
+    border: 3px solid #b88932;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.25);
+
+    overflow: hidden;
+
+    position: relative;
+}
+
+
+/* =========================================
+   LEFT PHOTO SIDE
+========================================= */
+
+.photo-side {
+
+    position: relative;
+
+    padding: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #efc87a,
+            #f8f0df
+        );
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+}
+
+
+.photo-frame {
+
+    width: 100%;
+
+    height: 570px;
+
+    border: 7px solid #fff9ec;
+
+    outline: 2px solid #b88932;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.20);
+
+    overflow: hidden;
+}
+
+
+.photo-frame img {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+
+/* =========================================
+   RIGHT INFORMATION PANEL
+========================================= */
+
+.information-side {
+    position: relative;
+
+    
+    padding: 24px 38px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(209, 144, 22, 0.12),
+            transparent 22%
+        ),
+        radial-gradient(
+            circle at 90% 85%,
+            rgba(244, 161, 7, 0.1),
+            transparent 25%
+        ),
+        #fbbf3e;
+
+    overflow: hidden;
+}
+
+
+/* Subtle decorative corner ornaments */
+
+
+
+
+.information-side::after {
+    content: "❦";
+
+    position: absolute;
+
+    bottom: 5px;
+    right: 15px;
+
+    font-size: 48px;
+
+    color: rgba(184, 137, 50, 0.18);
+
+    transform: rotate(160deg);
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.wedding-header {
+    position: relative;
+
+    background:
+        linear-gradient(
+            135deg,
+            #efc87a,
+            #f8f0df
+        );
+
+
+    text-align: center;
+
+    padding: 4px 0 12px;
+
+    border: none;
+}
+
+
+.wedding-header h1 {
+    font-family:
+        "Noto Sans Ethiopic",
+        sans-serif;
+
+    font-size: 30px;
+
+    font-weight: 600;
+
+    color: #8a5b1d;
+
+    margin: 3px 0;
+}
+
+
+.ornament {
+    color: #b88932;
+
+    font-size: 22px;
+
+    line-height: 1;
+}
+
+
+/* =========================================
+   REMOVE BOXED SECTION APPEARANCE
+========================================= */
+
+.card-section {
+    position: relative;
+
+    border: none;
+
+    background: transparent;
+
+    padding: 8px 5px;
+
+    margin: 0;
+
+    text-align: center;
+}
+
+
+/* =========================================
+   ORNAMENTAL SEPARATOR
+========================================= */
+
+.card-section::after {
+    content: "✦  ❦  ✦";
+
+    display: block;
+
+    margin: 7px auto 1px;
+
+    color: #b88932;
+
+    font-size: 11px;
+
+    letter-spacing: 4px;
+
+    opacity: 0.75;
+}
+
+
+/* Don't put separator after final address */
+
+.address-section::after {
+    display: none;
+}
+
+
+/* =========================================
+   SECTION HEADINGS
+========================================= */
+
+.card-section h2 {
+    font-family:
+        "Noto Sans Ethiopic",
+        sans-serif;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    color: #87591e;
+
+    margin-bottom: 4px;
+}
+
+
+/* =========================================
+   GUEST NAME
+========================================= */
+
+.guest-section {
+    padding-top: 4px;
+}
+
+
+.guest-section input {
+    width: 75%;
+
+    border: none;
+
+    border-bottom:
+        1px solid #b88932;
+
+    background: transparent;
+
+    outline: none;
+
+    text-align: center;
+
+    font-family:
+        "Noto Sans Ethiopic",
+        sans-serif;
+
+    font-size: 16px;
+
+    padding: 4px;
+
+    color: #4b321c;
+}
+
+
+.guest-preview {
+    font-size: 14px;
+
+    margin-top: 4px;
+}
+
+
+/* =========================================
+   COUPLE NAMES
+========================================= */
+
+.couple-section {
+    padding-top: 5px;
+}
+
+
+.couple-names {
+    display: flex;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fbe8c2,
+            #f8f0df
+        );
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+.couple-names h3 {
+    font-family:
+        "Noto Sans Ethiopic",
+        sans-serif;
+
+    font-size: 22px;
+
+    font-weight: 500;
+
+    color: #704716;
+}
+
+
+.heart {
+    color: #b88932;
+
+    font-size: 20px;
+}
+
+
+/* =========================================
+   PROGRAM DETAILS
+========================================= */
+
+.program-section {
+    text-align: left;
+
+    padding-left: 18px;
+
+    padding-right: 18px;
+}
+
+
+.program-section h2 {
+    text-align: center;
+}
+
+
+.detail {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 3px 0;
+}
+
+
+.icon {
+    width: 25px;
+
+    text-align: center;
+
+    font-size: 17px;
+}
+
+
+.detail strong {
+    font-family:
+        "Noto Sans Ethiopic",
+        sans-serif;
+
+    font-size: 12px;
+
+    color: #87591e;
+}
+
+
+.detail p {
+    font-size: 13px;
+
+    margin-top: 1px;
+}
+
+
+/* =========================================
+   INVITERS
+========================================= */
+
+.inviters-section {
+    padding-top: 7px;
+}
+
+
+.inviters-section p {
+    font-size: 14px;
+
+    margin: 2px;
+}
+
+
+.inviters-section h3 {
+    font-family:
+        "Noto Sans Ethiopic",
+        sans-serif;
+
+    font-size: 15px;
+
+    font-weight: 400;
+}
+
+
+/* =========================================
+   ADDITIONAL ADDRESS
+========================================= */
+
+.address-section {
+    padding-bottom: 2px;
+    background:
+        linear-gradient(
+            135deg,
+            #efc87a,
+            #f8f0df
+        );
+}
+
+
+.address-section p {
+    font-size: 13px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 800px) {
+
+    .information-side {
+        padding: 22px 20px;
+    }
+
+    .wedding-header h1 {
+        font-size: 26px;
+    }
+
+    .couple-names {
+        flex-wrap: wrap;
+
+        gap: 7px;
+    }
+
+    .couple-names h3 {
+        font-size: 20px;
+    }
+
+    .guest-section input {
+        width: 90%;
+    }
+
+    .information-side::before,
+    .information-side::after {
+        font-size: 38px;
+    }
+}
+
+/* =========================================
+   BIBLE VERSE
+========================================= */
+
+.bible-footer {
+
+    margin-top: 7px;
+
+    padding: 7px 12px;
+
+    text-align: center;
+
+    border-top:
+        2px solid #b88932;
+
+    background:
+        linear-gradient(
+            90deg,
+            #eee1c6,
+            #f8f0df,
+            #eee1c6
+        );
+}
+
+
+.cross {
+
+    color: #b88932;
+
+    font-size: 20px;
+
+    line-height: 1;
+}
+
+
+.verse {
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    margin-top: 2px;
+}
+
+
+.reference {
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    color: #87591e;
+
+    margin-top: 2px;
+}
+
+
+
+.bible-verse {
+
+    width: 100%;
+
+    padding: 7px 10px;
+
+    text-align: center;
+
+    border-top: 2px solid #b88932;
+
+    background:
+        linear-gradient(
+            90deg,
+            #eee1c6,
+            #f8f0df,
+            #eee1c6
+        );
+
+}
+
+
+.bible-verse .cross {
+
+    color: #b88932;
+
+    font-size: 20px;
+
+    line-height: 1;
+
+}
+
+
+.bible-verse p {
+
+    font-family:
+        "Noto Sans Ethiopic",
+        sans-serif;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    margin: 3px 0;
+}
+
+
+.bible-verse span {
+
+    font-family:
+        "Noto Sans Ethiopic",
+        sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #87591e;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 800px) {
+
+    body {
+
+        padding: 8px;
+
+        display: block;
+
+    }
+
+
+    .invitation {
+
+        width: 100%;
+
+        display: block;
+
+    }
+
+
+    .photo-side {
+
+        padding: 12px;
+
+    }
+
+
+    .photo-frame {
+
+        height: auto;
+
+        max-height: none;
+
+    }
+
+
+    .photo-frame img {
+
+        width: 100%;
+
+        height: auto;
+
+        max-height: 600px;
+
+        object-fit: cover;
+
+    }
+
+
+    .information-side {
+
+        padding: 10px;
+
+    }
+
+
+    .wedding-header h1 {
+
+        font-size: 26px;
+
+    }
+
+
+    .couple-names {
+
+        flex-wrap: wrap;
+
+        gap: 8px;
+
+    }
+
+
+    .couple-names h3 {
+
+        font-size: 20px;
+
+    }
+
+
+    .guest-section input {
+
+        width: 90%;
+
+    }
+
+
+    .card-section {
+
+        margin-top: 6px;
+
+    }
+
+}
+
+/* =========================================
+   LUXURY FLORAL FRAME
+========================================= */
+
+.invitation {
+    position: relative;
+
+    border: 2px solid #b88932;
+
+    /* Leave a little breathing room for the
+       decorative inner frame */
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.22);
+}
+
+
+/* Inner gold frame */
+
+.invitation::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 9px;
+
+    border: 1px solid rgba(184, 137, 50, 0.55);
+
+    pointer-events: none;
+
+    z-index: 20;
+}
+
+
+/* =========================================
+   FOUR FLORAL CORNERS
+========================================= */
+
+.invitation::after {
+    content: "❧";
+
+    position: absolute;
+
+    top: 2px;
+    left: 3px;
+
+    font-family: serif;
+
+    font-size: 52px;
+
+    color: rgba(184, 137, 50, 0.65);
+
+    transform: rotate(-10deg);
+
+    pointer-events: none;
+
+    z-index: 25;
+}
+
+
+/* Additional corner decorations */
+
+.photo-side::before {
+    content: "❧";
+
+    position: absolute;
+
+    top: 3px;
+    right: 4px;
+
+    font-size: 45px;
+
+    color: rgba(184, 137, 50, 0.55);
+
+    transform: rotate(80deg);
+
+    z-index: 10;
+
+    pointer-events: none;
+}
+
+
+.photo-side::after {
+    content: "❧";
+
+    position: absolute;
+
+    bottom: 3px;
+    left: 4px;
+
+    font-size: 45px;
+
+    color: rgba(184, 137, 50, 0.55);
+
+    transform: rotate(-100deg);
+
+    z-index: 10;
+
+    pointer-events: none;
+}
+
+
+.information-side::after {
+    content: "❧";
+
+    position: absolute;
+
+    bottom: 3px;
+    right: 4px;
+
+    font-size: 45px;
+
+    color: rgba(184, 137, 50, 0.55);
+
+    transform: rotate(170deg);
+
+    pointer-events: none;
+
+    z-index: 10;
+}
+
+
+/* =========================================
+   SOFT FLORAL BACKGROUND
+========================================= */
+
+.information-side {
+
+    background:
+
+        radial-gradient(
+            circle at 10% 8%,
+            rgba(184,137,50,0.10),
+            transparent 18%
+        ),
+
+        radial-gradient(
+            circle at 92% 12%,
+            rgba(184,137,50,0.08),
+            transparent 18%
+        ),
+
+        radial-gradient(
+            circle at 12% 90%,
+            rgba(184,137,50,0.07),
+            transparent 20%
+        ),
+
+        radial-gradient(
+            circle at 90% 88%,
+            rgba(184,137,50,0.10),
+            transparent 20%
+        ),
+
+        #f8f0df;
+}
+
+.crown {
+    color: #b88932;
+
+    font-size: 21px;
+
+    line-height: 1;
+
+    margin-top: 2px;
+
+    opacity: 0.85;
+}
+
+.card-actions {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+    flex-wrap: wrap;
+}
+
+
+.card-actions button {
+    border: 1px solid #b88932;
+
+    background: #b728fe;
+
+    color: #704716;
+
+    padding: 9px 18px;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    font-family:
+        "Noto Sans Ethiopic",
+        sans-serif;
+
+    transition: 0.2s;
+}
+
+
+.card-actions button:hover {
+    background: #b88932;
+
+    color: white;
+
+    transform: translateY(-2px);
+}
+
+
+@media print {
+
+    body {
+        padding: 0;
+
+        background: white;
+    }
+
+    .card-actions {
+        display: none !important;
+    }
+
+    .invitation {
+        width: 100%;
+
+        box-shadow: none;
+
+        border: 2px solid #b88932;
+    }
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #2c3e50;
+    color: white;
+}
+
+     </style>     
+
+
+</head>
+
+
+<body>
+
+    <main class="invitation">
+
+
+        <section class="photo-side">
+
+    <div class="photo-frame">
+
+        <img
+            src="serg/seljo.png"
+            alt="Yohannes and Selam"
+        >
+
+    </div>
+
+
+    <!-- የመጽሐፍ ቅዱስ ጥቅስ -->
+
+    <div class="bible-verse">
+
+        <div class="cross"><b>✝✝✝</b></div>
+
+        <p>
+            <b><i>Therefore what God has joined together, 
+            let no one separate.</i></b>
+        </p>
+
+        <span>
+            <strong>Mark 10:9</strong>
+        </span>
+
+    </div>
+
+</section>
+
+
+
+        <!-- =========================
+             RIGHT: ALL INFORMATION
+        ========================== -->
+
+        <section class="information-side">
+
+
+            <!-- HEADER -->
+
+            <header class="wedding-header">
+
+              <div class="ornament">
+                     ♕ 💛 ♕
+              </div>
+
+                 <h1>
+                  የጋብቻ ጥሪ
+                </h1>
+
+              <div class="crown">
+                💚✦💚 ✦💚
+              </div>
+
+            </header>
+
+            <!-- 1. GUEST NAME -->
+
+            <section class="card-section guest-section">
+
+                <h2>
+                    ውድ እንግዳችን
+                </h2>
+        <!--
+                <h2>
+              አቶ/ ወ/ሮ: __________________________________________________________
+                </h2>
+         -->
+                <input
+                    type="text"
+                    id="guestName"
+                    placeholder="የእንግዳ ስም አስገባ፡ አቶ፣ ወ/ሮ"
+                    autocomplete="off"
+                >
+
+            </section>
+
+            <!-- 2. BRIDE & GROOM -->
+
+            <section class="card-section couple-section">
+
+                <h2>
+                    የማክበር ሰላምታችንን እያቀረብን የልጆቻችን
+                </h2>
+
+                <div class="couple-names">
+                    <h2>
+                     የዮሐንስ ሸዋ
+                    </h2>
+                </div>
+                <div class="couple-names">
+                     <h2>
+                      እና
+                    </h2>
+                </div>
+
+                <div class="couple-names">
+                    <h2>
+                    ሰላም ማረኝ
+                    </h2>
+                </div>
+
+            </section>
+
+            <!-- 3. PROGRAM DESCRIPTION -->
+
+            <section class="card-section program-section">
+
+                <h2> 
+                    የጋብቻ ስነ-ስርዓት የሚፈፀመው ጥቅምት ቅዳሜ 7 ቀን 2018 ዓ.ም ስለሆነ በዚሁ 
+                    ዕለት ከቀኑ 9፡00 ሰዓት 
+                    በ <b><u>GOLD ADDIS ዲኮር እና አዳራሽ</u></b> ባዘጋጀነው 
+                    የቃልኪዳን እና የምሳ ግብዣ ላይ ከ______________ ጋር ተገኝተው የደስታችን ተካፋይ 
+                    እንዲሆኑ በአክብሮት ጠርተንዎታል። 
+                </h2>
+
+            </section>
+
+            <!-- 4. INVITERS -->
+
+            <section class="card-section inviters-section">
+
+                <h2>
+                 <u>አክባሪዎ</u>
+                </h2>
+
+                <h2>
+                 አቶ ማረኝ አብዲ
+                </h2>
+                <h2>
+                 እና
+                </h2>
+                <h2>
+                 ወ/ሮ ሙላቷ አየለ
+                </h2>
+
+            </section>
+
+            <!-- 5. ADDITIONAL ADDRESS -->
+
+            <section class="card-section address-section">
+                 <div class="detail">
+
+                    <span class="icon">📍📍</span>
+
+                    <div>
+
+                        <strong>
+                            አድራሻ: 22 ማዞሪያ, አዲስ አበባ
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+        </section>
+
+    </main>
+
+    <div class="card-actions">
+
+    <button onclick="printCard()">
+        🖨️ Print
+    </button>
+
+    <button onclick="savePDF()">
+        📄 Save PDF 
+    </button>
+</div>
+    
+<footer>
+    <p><a href="wedding.html" style="color:white;">⬅ Back to HomePage</a></p>
+</footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
+    <script src="script.js"></script>
+
+</body>
+
+</html>

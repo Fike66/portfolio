@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wedding Card Template</title>
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: #0f85fc;
+    color: #333;
+}
+
+header {
+    background: #0af038;
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+section {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    margin-top: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background: #2980b9;
+}
+
+header img {
+    width: 130px;
+    height: 10px;
+    border-radius: 50%;
+    border: 4px solid white;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #2c3e50;
+    color: white;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 10px;
+    margin: 10px;
+}
+
+.gallery img {
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.gallery img:hover {
+    transform: scale(1.05);
+}
+</style>
+</head>
+
+<div id="popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center;">
+    <img id="popup-img" style="max-width:90%; max-height:90%;">
+</div>
+
+<script>
+function openImage(src) {
+    document.getElementById("popup").style.display = "flex";
+    document.getElementById("popup-img").src = src;
+}
+
+document.getElementById("popup").onclick = function() {
+    this.style.display = "none";
+}
+</script>
+
+<body>
+
+<header>
+    <h1>Wedding Card Templates</h1>
+    <p><b>የተለያዩ የሰርግ እና መልስ እንግዳ መጥሪያ ካርዶችን በፍላጎትዎ ወይም በኛ ድጋፍ በሚያምሩ ዲዛይኖች እንሰራለን</b></p>
+</header>
+
+<section>
+    <div class="card">
+        <h2>የተለያዩ ሳምፕለ ዲዛይኖች ከሀገር ዉስጥ</h2>
+        
+        <div class="gallery">
+            <img src="serg/wed8.png" onclick="openImage(this.src)">
+            <img src="serg/wed7.png" onclick="openImage(this.src)">
+            <img src="serg/wed6.png" onclick="openImage(this.src)">
+            <img src="serg/wed9.png" onclick="openImage(this.src)">
+            <img src="serg/wed10.png" onclick="openImage(this.src)">
+            <img src="serg/wed11.png" onclick="openImage(this.src)">
+            <img src="serg/wed6.png" onclick="openImage(this.src)">
+            <img src="serg/wed12.png" onclick="openImage(this.src)">
+            <img src="serg/wed13.png" onclick="openImage(this.src)">
+            
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="card">
+        <h2>ሳምፕለ ዲዛይኖች ከሀገር ውጭ</h2>
+
+        <div class="gallery">
+
+            <img src="serg/wed1.png" onclick="openImage(this.src)">
+            <img src="serg/wed2.png" onclick="openImage(this.src)">
+            <img src="serg/wed3.png" onclick="openImage(this.src)">
+            <img src="serg/wed4.png" onclick="openImage(this.src)">
+            <img src="serg/wed5.png" onclick="openImage(this.src)">
+                  
+        </div>
+    </div>
+</section>
+
+
+<footer>
+    <p><a href="wedding.html" style="color:white;">⬅ Back to HomePage</a></p>
+</footer>
+
+</body>
+</html>
