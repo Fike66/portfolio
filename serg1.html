@@ -7,7 +7,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Wedding of Yohannes and Selam</title>
+    <title>Wedding Card</title>
 
     <link rel="preconnect"
           href="https://fonts.googleapis.com">
@@ -267,13 +267,13 @@ body {
 ========================================= */
 
 .card-section::after {
-    content: "✦  ❦  ✦";
+    content: "✿ ❀ ✿";
 
     display: block;
 
     margin: 7px auto 1px;
 
-    color: #b88932;
+    color: yellow;
 
     font-size: 11px;
 
@@ -982,12 +982,11 @@ body {
         border: 2px solid #b88932;
     }
 }
-
-footer {
-    text-align: center;
-    padding: 20px;
-    background: #2c3e50;
-    color: white;
+.your-card-class {
+    border-top: 4px double yellow; 
+    border-bottom: 4px double #00cccc; 
+    border-left: 4px double yellow; 
+    padding: 20px; 
 }
 
      </style>     
@@ -1045,8 +1044,14 @@ footer {
 
             <header class="wedding-header">
 
+        <div class="right-section">
+            <div class="decoration-top" style="text-align: right; color: yellow; font-size: 2.0rem;">
+           ✿ ✿ ✿ ❀ ✿ ✿❀✿ ✿ ❀ ✿ ✿ ✿
+            </div>
+         </div>
+
               <div class="ornament">
-                     ♕ 💛 ♕
+                     
               </div>
 
                  <h1>
@@ -1054,7 +1059,7 @@ footer {
                 </h1>
 
               <div class="crown">
-                💚✦💚 ✦💚
+                ♕ 💛 ♕
               </div>
 
             </header>
@@ -1109,7 +1114,7 @@ footer {
 
             <!-- 3. PROGRAM DESCRIPTION -->
 
-            <section class="card-section program-section">
+            <section class="card-section guest-section">
 
                 <h2> 
                     የጋብቻ ስነ-ስርዓት የሚፈፀመው ጥቅምት ቅዳሜ 7 ቀን 2018 ዓ.ም ስለሆነ በዚሁ 
@@ -1146,7 +1151,7 @@ footer {
             <section class="card-section address-section">
                  <div class="detail">
 
-                    <span class="icon">📍📍</span>
+                    <span class="icon">📍</span>
 
                     <div>
 
@@ -1158,8 +1163,22 @@ footer {
 
                 </div>
 
+        <div class="right-section">
+            <div class="decoration-top" style="text-align: right; color: yellow; font-size: 2.0rem;">
+            ✿ ✿ ✿ ❀ ✿ ✿❀✿ ✿ ❀ ✿ ✿ ✿
+            </div>
+         </div>
+
             </section>
         </section>
+
+         <footer style="text-align:center; background-color:rgb(191, 0, 255); width:200%; position:relative;">
+            <p style="color:cyan; font-size: 0.9rem;"> FikeTech<b>^^</b> →
+                <i>For wedding, birthday and graduation invitation card, you can 
+                    contact by 📞: +251970620203 and 📩: 
+                    <a href="mailto:fekaduwolde41@gmail.com">fekaduwolde41@gmail.com</a></i>
+            </p>
+        </footer>
 
     </main>
 
@@ -1169,13 +1188,10 @@ footer {
         🖨️ Print
     </button>
 
-    <button onclick="savePDF()">
-        📄 Save PDF 
-    </button>
 </div>
     
-<footer>
-    <p><a href="wedding.html" style="color:white;">⬅ Back to HomePage</a></p>
+<footer style = "background-color: black; color:white;">
+    <p style="font-size:1.5rem;"><a href="wedding.html" style="color:white;">⬅ Back2Home</a></p>
 </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
